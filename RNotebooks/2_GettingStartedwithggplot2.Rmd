@@ -21,6 +21,8 @@ str(mpg)
 head(mpg)
 tail(mpg)
 names(mpg)
+
+# opens data in RStudio, but not visible in R notebook
 View(mpg)
 
 ```
@@ -30,7 +32,24 @@ View(mpg)
 
 ```{r}
 data(package = "ggplot2")
+# opens window in RStudio and listed the associated data
 ```
+
+Data sets in package ‘ggplot2’:
+
+diamonds                     Prices of over 50,000 round cut diamonds
+economics                    US economic time series
+economics_long               US economic time series
+faithfuld                    2d density estimate of Old Faithful data
+luv_colours                  'colors()' in Luv space
+midwest                      Midwest demographics
+mpg                          Fuel economy data from 1999 to 2008 for 38 popular models
+                             of cars
+msleep                       An updated and expanded version of the mammals sleep
+                             dataset
+presidential                 Terms of 11 presidents from Eisenhower to Obama
+seals                        Vector field of seal movements
+txhousing                    Housing sales in TX
 
 
 3.Apart from the US, most countries use fuel consumption (fuel consumed over fixed distance) rather than fuel economy (distance travelled with fixed amount of fuel). How could you convert cty and hwy into the European standard of l/100km?
@@ -39,8 +58,8 @@ data(package = "ggplot2")
 
 # conversion values from https://www.asknumbers.com/mpg-to-L100km.aspx#:~:text=To%20convert%20mpg%20to%20liters,9.8%20liters%20per%20100%20km.
 mpg %>%
-  mutate(cty_metric = round(235.214/cty,2),
-         hwy_metric = round(235.214/hwy,2)) %>%
+  mutate(cty_metric = round(235.214/cty,0),
+         hwy_metric = round(235.214/hwy,0)) %>%
   select(cty, cty_metric, hwy, hwy_metric)  
 
 ```
@@ -55,13 +74,13 @@ mpg %>%
   count() %>%
   arrange(-n)
 
-# most variation in a model
+# most variation in a model defined as the most entries per one model
 mpg %>%
   group_by(model) %>%
   count() %>%
   arrange(-n)
 
-# remove redundant specification in model name then count models per manufacturer
+# remove redundant specification in model name, then recount models per manufacturer
 mpg %>%
   mutate(model_simple = str_replace_all(model, c("quattro" = "", "4wd" = "",
                                               "2wd" = "", "awd" = ""))) %>%
