@@ -1,0 +1,77 @@
+---
+title: "ggplot2: 2 Getting Started with ggplot2"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). We will work through the exercises together.
+
+```{r setup}
+
+library(tidyverse)
+
+```
+
+
+## 2.2.1 Fuel economy data
+
+1.List five functions that you could use to get more information about the mpg dataset.
+
+```{r}
+str(mpg)
+head(mpg)
+tail(mpg)
+names(mpg)
+View(mpg)
+
+```
+
+
+2.How can you find out what other datasets are included with ggplot2?
+
+```{r}
+data(package = "ggplot2")
+```
+
+
+3.Apart from the US, most countries use fuel consumption (fuel consumed over fixed distance) rather than fuel economy (distance travelled with fixed amount of fuel). How could you convert cty and hwy into the European standard of l/100km?
+
+```{r}
+
+# conversion values from https://www.asknumbers.com/mpg-to-L100km.aspx#:~:text=To%20convert%20mpg%20to%20liters,9.8%20liters%20per%20100%20km.
+mpg %>%
+  mutate(cty_metric = round(235.214/cty,2),
+         hwy_metric = round(235.214/hwy,2)) %>%
+  select(cty, cty_metric, hwy, hwy_metric)  
+
+```
+
+
+4.Which manufacturer has the most models in this dataset? Which model has the most variations? Does your answer change if you remove the redundant specification of drive train (e.g. “pathfinder 4wd”, “a4 quattro”) from the model name?
+
+```{r}
+# most models by manufacturer
+mpg %>%
+  group_by(manufacturer) %>%
+  count() %>%
+  arrange(-n)
+
+# most variation in a model
+mpg %>%
+  group_by(model) %>%
+  count() %>%
+  arrange(-n)
+
+# remove redundant specification in model name then count models per manufacturer
+mpg %>%
+  mutate(model_simple = str_replace_all(model, c("quattro" = "", "4wd" = "",
+                                              "2wd" = "", "awd" = ""))) %>%
+  distinct(manufacturer, model_simple, year) %>%
+  group_by(manufacturer) %>%
+  count() %>%
+  arrange(-n)
+
+```
+
+Dodge has the most models in the original dataset.  
+The model with the most variation is caravan 2wd.
+If we remove the drive train from the model, toyota is the manufacturuer with the most models.
