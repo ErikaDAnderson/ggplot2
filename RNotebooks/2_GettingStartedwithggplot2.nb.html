@@ -1749,32 +1749,18 @@ summary {
 
 
 <!-- rnb-text-begin -->
-<p>This notebook is based on exercises completed from <a href="https://ggplot2-book.org/index.html">ggplot2: Elegant Graphics for Data Analysis</a>. We will work through the exercises together.</p>
+<p>This notebook is based on exercises completed from <a href="https://ggplot2-book.org/index.html">ggplot2: Elegant Graphics for Data Analysis</a>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
-<pre class="r"><code>
-library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5cbmBgYCJ9 -->
+<pre class="r"><code>library(tidyverse)
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSCRdGlkeXZlcnNlkiB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNi4zUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxuXHUwMDFiWzM3bS0tIFx1MDAxYlsxbUF0dGFjaGluZyBwYWNrYWdlc1x1MDAxYlsyMm0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIHRpZHl2ZXJzZSAxLjMuMCAtLVx1MDAxYlszOW1cblx1MDAxYlszN21cdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bWdncGxvdDJcdTAwMWJbMzdtIDMuMy4yICAgICBcdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bXB1cnJyICBcdTAwMWJbMzdtIDAuMy40XG5cdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bXRpYmJsZSBcdTAwMWJbMzdtIDMuMC4zICAgICBcdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bWRwbHlyICBcdTAwMWJbMzdtIDEuMC4xXG5cdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bXRpZHlyICBcdTAwMWJbMzdtIDEuMS4xICAgICBcdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bXN0cmluZ3JcdTAwMWJbMzdtIDEuNC4wXG5cdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bXJlYWRyICBcdTAwMWJbMzdtIDEuMy4xICAgICBcdTAwMWJbMzJtdlx1MDAxYlszN20gXHUwMDFiWzM0bWZvcmNhdHNcdTAwMWJbMzdtIDAuNS4wXHUwMDFiWzM5bVxucGFja2FnZSCRZ2dwbG90MpIgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiAzLjYuM3BhY2thZ2UgkXRpYmJsZZIgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiAzLjYuM3BhY2thZ2UgkXRpZHlykiB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNi4zcGFja2FnZSCRcmVhZHKSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjNwYWNrYWdlIJFwdXJycpIgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiAzLjYuM3BhY2thZ2UgkWRwbHlykiB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNi4zcGFja2FnZSCRc3RyaW5ncpIgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiAzLjYuM3BhY2thZ2UgkWZvcmNhdHOSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjNcdTAwMWJbMzdtLS0gXHUwMDFiWzFtQ29uZmxpY3RzXHUwMDFiWzIybSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gdGlkeXZlcnNlX2NvbmZsaWN0cygpIC0tXG5cdTAwMWJbMzFteFx1MDAxYlszN20gXHUwMDFiWzM0bWRwbHlyXHUwMDFiWzM3bTo6XHUwMDFiWzMybWZpbHRlcigpXHUwMDFiWzM3bSBtYXNrcyBcdTAwMWJbMzRtc3RhdHNcdTAwMWJbMzdtOjpmaWx0ZXIoKVxuXHUwMDFiWzMxbXhcdTAwMWJbMzdtIFx1MDAxYlszNG1kcGx5clx1MDAxYlszN206Olx1MDAxYlszMm1sYWcoKVx1MDAxYlszN20gICAgbWFza3MgXHUwMDFiWzM0bXN0YXRzXHUwMDFiWzM3bTo6bGFnKClcdTAwMWJbMzltXG4ifQ== -->
-<pre><code>package 㤼㸱tidyverse㤼㸲 was built under R version 3.6.3Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
-[37m-- [1mAttaching packages[22m --------------------------------------- tidyverse 1.3.0 --[39m
-[37m[32mv[37m [34mggplot2[37m 3.3.2     [32mv[37m [34mpurrr  [37m 0.3.4
-[32mv[37m [34mtibble [37m 3.0.3     [32mv[37m [34mdplyr  [37m 1.0.1
-[32mv[37m [34mtidyr  [37m 1.1.1     [32mv[37m [34mstringr[37m 1.4.0
-[32mv[37m [34mreadr  [37m 1.3.1     [32mv[37m [34mforcats[37m 0.5.0[39m
-package 㤼㸱ggplot2㤼㸲 was built under R version 3.6.3package 㤼㸱tibble㤼㸲 was built under R version 3.6.3package 㤼㸱tidyr㤼㸲 was built under R version 3.6.3package 㤼㸱readr㤼㸲 was built under R version 3.6.3package 㤼㸱purrr㤼㸲 was built under R version 3.6.3package 㤼㸱dplyr㤼㸲 was built under R version 3.6.3package 㤼㸱stringr㤼㸲 was built under R version 3.6.3package 㤼㸱forcats㤼㸲 was built under R version 3.6.3[37m-- [1mConflicts[22m ------------------------------------------ tidyverse_conflicts() --
-[31mx[37m [34mdplyr[37m::[32mfilter()[37m masks [34mstats[37m::filter()
-[31mx[37m [34mdplyr[37m::[32mlag()[37m    masks [34mstats[37m::lag()[39m</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="fuel-economy-data" class="section level2">
 <h2>2.2.1 Fuel economy data</h2>
-<p>1.List five functions that you could use to get more information about the mpg dataset.</p>
+<p>1.List five functions that you could use to get more information about the mpg data set.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKG1wZylcbmBgYCJ9 -->
@@ -1821,13 +1807,14 @@ package 㤼㸱ggplot2㤼㸲 was built under R version 3.6.3package 㤼㸱tibble�
 <pre><code> [1] &quot;manufacturer&quot; &quot;model&quot;        &quot;displ&quot;        &quot;year&quot;         &quot;cyl&quot;          &quot;trans&quot;       
  [7] &quot;drv&quot;          &quot;cty&quot;          &quot;hwy&quot;          &quot;fl&quot;           &quot;class&quot;       </code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuVmlldyhtcGcpXG5cbmBgYCJ9 -->
-<pre class="r"><code>View(mpg)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBvcGVucyBkYXRhIGluIFJTdHVkaW8sIGJ1dCBub3QgdmlzaWJsZSBpbiBSIG5vdGVib29rXG5WaWV3KG1wZylcblxuYGBgIn0= -->
+<pre class="r"><code># opens data in RStudio, but not visible in R notebook
+View(mpg)
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>2.How can you find out what other datasets are included with ggplot2?</p>
+<p>2.How can you find out what other data sets are included with ggplot2?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YShwYWNrYWdlID0gXCJnZ3Bsb3QyXCIpXG5gYGAifQ== -->
@@ -1836,13 +1823,23 @@ package 㤼㸱ggplot2㤼㸲 was built under R version 3.6.3package 㤼㸱tibble�
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Data sets in package ‘ggplot2’:</p>
-<p>diamonds Prices of over 50,000 round cut diamonds economics US economic time series economics_long US economic time series faithfuld 2d density estimate of Old Faithful data luv_colours ‘colors()’ in Luv space midwest Midwest demographics mpg Fuel economy data from 1999 to 2008 for 38 popular models of cars msleep An updated and expanded version of the mammals sleep dataset presidential Terms of 11 presidents from Eisenhower to Obama seals Vector field of seal movements txhousing Housing sales in TX</p>
+<p>diamonds Prices of over 50,000 round cut diamonds<br />
+economics US economic time series<br />
+economics_long US economic time series<br />
+faithfuld 2d density estimate of Old Faithful data<br />
+luv_colours ‘colors()’ in Luv space<br />
+midwest Midwest demographics<br />
+mpg Fuel economy data from 1999 to 2008 for 38 popular models of cars<br />
+msleep An updated and expanded version of the mammals sleep dataset<br />
+presidential Terms of 11 presidents from Eisenhower to Obama<br />
+seals Vector field of seal movements<br />
+txhousing Housing sales in TX</p>
 <p>3.Apart from the US, most countries use fuel consumption (fuel consumed over fixed distance) rather than fuel economy (distance travelled with fixed amount of fuel). How could you convert cty and hwy into the European standard of l/100km?</p>
+<p>Conversion values from <a href="https://www.asknumbers.com/mpg-to-L100km.aspx#:~:text=To%20convert%20mpg%20to%20liters,9.8%20liters%20per%20100%20km">this website</a></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIGNvbnZlcnNpb24gdmFsdWVzIGZyb20gaHR0cHM6Ly93d3cuYXNrbnVtYmVycy5jb20vbXBnLXRvLUwxMDBrbS5hc3B4Izp+OnRleHQ9VG8lMjBjb252ZXJ0JTIwbXBnJTIwdG8lMjBsaXRlcnMsOS44JTIwbGl0ZXJzJTIwcGVyJTIwMTAwJTIwa20uXG5tcGcgJT4lXG4gIG11dGF0ZShjdHlfbWV0cmljID0gcm91bmQoMjM1LjIxNC9jdHksMCksXG4gICAgICAgICBod3lfbWV0cmljID0gcm91bmQoMjM1LjIxNC9od3ksMCkpICU+JVxuICBzZWxlY3QoY3R5LCBjdHlfbWV0cmljLCBod3ksIGh3eV9tZXRyaWMpICBcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5tcGcgJT4lXG4gIG11dGF0ZShjdHlfbWV0cmljID0gcm91bmQoMjM1LjIxNC9jdHksMCksXG4gICAgICAgICBod3lfbWV0cmljID0gcm91bmQoMjM1LjIxNC9od3ksMCkpICU+JVxuICBzZWxlY3QoY3R5LCBjdHlfbWV0cmljLCBod3ksIGh3eV9tZXRyaWMpICBcbmBgYCJ9 -->
 <pre class="r"><code>
-# conversion values from https://www.asknumbers.com/mpg-to-L100km.aspx#:~:text=To%20convert%20mpg%20to%20liters,9.8%20liters%20per%20100%20km.
 mpg %&gt;%
   mutate(cty_metric = round(235.214/cty,0),
          hwy_metric = round(235.214/hwy,0)) %&gt;%
@@ -1861,21 +1858,42 @@ mpg %&gt;%
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>4.Which manufacturer has the most models in this dataset? Which model has the most variations? Does your answer change if you remove the redundant specification of drive train (e.g. “pathfinder 4wd”, “a4 quattro”) from the model name?</p>
+<p>Dodge has the most models in the original data set.<br />
+The model with the most variation is caravan 2wd.<br />
+If we remove the drive train from the model, Toyota is the manufacturer with the most models.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBtb3N0IG1vZGVscyBieSBtYW51ZmFjdHVyZXJcbm1wZyAlPiVcbiAgZ3JvdXBfYnkobWFudWZhY3R1cmVyKSAlPiVcbiAgY291bnQoKSAlPiVcbiAgYXJyYW5nZSgtbilcblxuIyBtb3N0IHZhcmlhdGlvbiBpbiBhIG1vZGVsIGRlZmluZWQgYXMgdGhlIG1vc3QgZW50cmllcyBwZXIgb25lIG1vZGVsXG5tcGcgJT4lXG4gIGdyb3VwX2J5KG1vZGVsKSAlPiVcbiAgY291bnQoKSAlPiVcbiAgYXJyYW5nZSgtbilcblxuIyByZW1vdmUgcmVkdW5kYW50IHNwZWNpZmljYXRpb24gaW4gbW9kZWwgbmFtZSwgdGhlbiByZWNvdW50IG1vZGVscyBwZXIgbWFudWZhY3R1cmVyXG5tcGcgJT4lXG4gIG11dGF0ZShtb2RlbF9zaW1wbGUgPSBzdHJfcmVwbGFjZV9hbGwobW9kZWwsIGMoXCJxdWF0dHJvXCIgPSBcIlwiLCBcIjR3ZFwiID0gXCJcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcIjJ3ZFwiID0gXCJcIiwgXCJhd2RcIiA9IFwiXCIpKSkgJT4lXG4gIGRpc3RpbmN0KG1hbnVmYWN0dXJlciwgbW9kZWxfc2ltcGxlLCB5ZWFyKSAlPiVcbiAgZ3JvdXBfYnkobWFudWZhY3R1cmVyKSAlPiVcbiAgY291bnQoKSAlPiVcbiAgYXJyYW5nZSgtbilcblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBtb3N0IG1vZGVscyBieSBtYW51ZmFjdHVyZXJcbm1wZyAlPiVcbiAgZ3JvdXBfYnkobWFudWZhY3R1cmVyKSAlPiVcbiAgY291bnQoKSAlPiVcbiAgYXJyYW5nZSgtbilcbmBgYCJ9 -->
 <pre class="r"><code># most models by manufacturer
 mpg %&gt;%
   group_by(manufacturer) %&gt;%
   count() %&gt;%
-  arrange(-n)
-
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5jb2wiOjIsIm5yb3ciOjE1fSwicmRmIjoiSDRzSUFBQUFBQUFBQmwxU3kwN0RNQkIwbnFVUmZZaWVFQmVFeExHUktQQUY4QUdJVTY5dTRqYWhyaDM1MGRJYnY4d1BOS3hUTDZvU2FlTGQ4WGpYWS92emZmbWNMVE5DU0VTaU5DQlJBaUZKM3o2ZUZxOExRdUlRc29ERVpPakdiMUROSUhEa0ZERHhFMGtweXczelNXcmtVUnJxczJ3ditWWWY2SVlKejhScnFVb2ZENHVLN1pYa3pPQWt0V1h0NDBGMXRLS2ttS2JhcnFpeW1JbGFhNG8xazBxQ0VtdDhNZFpnalVZS1U5TUNkOE9wS08rVjNET0ZnaDFUaFZWSFRIa3RDc2tGaEtQT0lDR1BnQWZBSGVBVzRBN2dCakQyY0RxMzlNcnR3N1gzaUhxbmx4U2NhdTFQRHNtc3BJYm1hMFYzckNjZktubklCZkRhOXdoLzROZTI3VysvTG9xbTNjMmN5ZXNkRlhaTkMyUFZ2OVhBdVRyMVZnOWtZMm9wWUgwNDh3WXU5eGVvSGpHeHd2VXI1MFZseFhiKzRqeDAwK2R2NU9QSlJSeWVXOGF0TDVYZ0ZUS3hxUVUrbTRUVEZlTStHWVA1emxiZXFGcmc0OGlBMWJtQng0VzZETzRLbWM0Yk9mMEJRaStYQk5FQ0FBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["manufacturer"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"dodge","2":"37"},{"1":"toyota","2":"34"},{"1":"volkswagen","2":"27"},{"1":"ford","2":"25"},{"1":"chevrolet","2":"19"},{"1":"audi","2":"18"},{"1":"hyundai","2":"14"},{"1":"subaru","2":"14"},{"1":"nissan","2":"13"},{"1":"honda","2":"9"},{"1":"jeep","2":"8"},{"1":"pontiac","2":"5"},{"1":"land rover","2":"4"},{"1":"mercury","2":"4"},{"1":"lincoln","2":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[15]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIG1vc3QgdmFyaWF0aW9uIGluIGEgbW9kZWwgZGVmaW5lZCBhcyB0aGUgbW9zdCBlbnRyaWVzIHBlciBvbmUgbW9kZWxcbm1wZyAlPiVcbiAgZ3JvdXBfYnkobW9kZWwpICU+JVxuICBjb3VudCgpICU+JVxuICBhcnJhbmdlKC1uKVxuYGBgIn0= -->
+<pre class="r"><code>
 # most variation in a model defined as the most entries per one model
 mpg %&gt;%
   group_by(model) %&gt;%
   count() %&gt;%
-  arrange(-n)
-
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5jb2wiOjIsIm5yb3ciOjM4fSwicmRmIjoiSDRzSUFBQUFBQUFBQm8xVXpYTGFNQkFXUDRaZ0NLUmxwbWVmY2d1VFVOSVhhQitnMDFPdWl5eU1hbG5yeWpLUW52cWNmWmpRdFNPQmNkT1pNck5HKzNtMXU5LysrTnVYcDQvaFU4Z1k2N0hlb01ONkFSM1o0UFBYaCtYamtyRitsN1FPNjdOUjlYOGdxemtkS3ZDRzVOYTlHSE13c0FNZExmZXhnK1lHc3VqaDhmNCt5aVZQeXp4YW5WNEZYTzRrZDhxN0dGSzA4SWJWZDJFdE9HV1lsWVVGblRnMWhGWDBvd1JyRFRya2ZXSkF4eEhmQ29PcEVBMC9ZNW5sUnZ5RUNFNVFGMWFuVkNBenowNloxRXBVb0NJMi9uWmNrdU1FR3c1bkc2TDFkNzZESElvQ3JOY0sxSEJPMzhwMWFWQjd6aGFmSzg0V09HYlF6SFZsU3EyRmFib0ZaV1htSFUzRUlWZG9MaXdtR3dJS1M5aVpZYWpGUGxvTFlaWHdCZUoxTTRxU0VsbGZkR3JJMGFCU1BzUVZxVHNxdmI4WXZsWTJOL0xna0Y1aXBjOHVBMFhVZkdYU09vYUZMVFk3TU11dzFCYWtGaGQ1VDNPdzI0M1U4UVU2cnNvdElvTTdZVTdkL3RUcTlwVEtJR0pwSlRhSlVES0hjNm11TmV4a0FoWk53K1NEcXFmRWxMS2dxSHRJeUVFVm04enJjYWI0VlVDU1VVdXVHakw4RHhtOEljRS9wTitTWGt1NnJUME11S0paY3p2b3dUQ21lVnRzYU8xRXkzeGtjTC9RaEJlT1ovY1hQWTdINCsrMlgyOTBVd2QxWUlheFVQNExvT254MHJvMnhMenFCRjNzemgyalptSWQwd0ptTk9NVUtMN2oyMUtuZHl0WDhRNTcvVjI3ODIzajdDclFQenBYZ1crNTBBbk5sVTlWd2ZxVTZwUlkxM3dXTkxyYTcyVklhTEd3dEgzZUx1U29QRkp6WXk5L0FDeC94dVlVQlFBQSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["model"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"caravan 2wd","2":"11"},{"1":"ram 1500 pickup 4wd","2":"10"},{"1":"civic","2":"9"},{"1":"dakota pickup 4wd","2":"9"},{"1":"jetta","2":"9"},{"1":"mustang","2":"9"},{"1":"a4 quattro","2":"8"},{"1":"grand cherokee 4wd","2":"8"},{"1":"impreza awd","2":"8"},{"1":"a4","2":"7"},{"1":"camry","2":"7"},{"1":"camry solara","2":"7"},{"1":"durango 4wd","2":"7"},{"1":"f150 pickup 4wd","2":"7"},{"1":"passat","2":"7"},{"1":"sonata","2":"7"},{"1":"tiburon","2":"7"},{"1":"toyota tacoma 4wd","2":"7"},{"1":"4runner 4wd","2":"6"},{"1":"altima","2":"6"},{"1":"explorer 4wd","2":"6"},{"1":"forester awd","2":"6"},{"1":"new beetle","2":"6"},{"1":"c1500 suburban 2wd","2":"5"},{"1":"corolla","2":"5"},{"1":"corvette","2":"5"},{"1":"grand prix","2":"5"},{"1":"gti","2":"5"},{"1":"malibu","2":"5"},{"1":"k1500 tahoe 4wd","2":"4"},{"1":"mountaineer 4wd","2":"4"},{"1":"pathfinder 4wd","2":"4"},{"1":"range rover","2":"4"},{"1":"a6 quattro","2":"3"},{"1":"expedition 2wd","2":"3"},{"1":"maxima","2":"3"},{"1":"navigator 2wd","2":"3"},{"1":"land cruiser wagon 4wd","2":"2"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[38]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIHJlbW92ZSByZWR1bmRhbnQgc3BlY2lmaWNhdGlvbiBpbiBtb2RlbCBuYW1lLCB0aGVuIHJlY291bnQgbW9kZWxzIHBlciBtYW51ZmFjdHVyZXJcbm1wZyAlPiVcbiAgbXV0YXRlKG1vZGVsX3NpbXBsZSA9IHN0cl9yZXBsYWNlX2FsbChtb2RlbCwgYyhcInF1YXR0cm9cIiA9IFwiXCIsIFwiNHdkXCIgPSBcIlwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiMndkXCIgPSBcIlwiLCBcImF3ZFwiID0gXCJcIikpKSAlPiVcbiAgZGlzdGluY3QobWFudWZhY3R1cmVyLCBtb2RlbF9zaW1wbGUsIHllYXIpICU+JVxuICBncm91cF9ieShtYW51ZmFjdHVyZXIpICU+JVxuICBjb3VudCgpICU+JVxuICBhcnJhbmdlKC1uKVxuYGBgIn0= -->
+<pre class="r"><code>
 # remove redundant specification in model name, then recount models per manufacturer
 mpg %&gt;%
   mutate(model_simple = str_replace_all(model, c(&quot;quattro&quot; = &quot;&quot;, &quot;4wd&quot; = &quot;&quot;,
@@ -1883,17 +1901,22 @@ mpg %&gt;%
   distinct(manufacturer, model_simple, year) %&gt;%
   group_by(manufacturer) %&gt;%
   count() %&gt;%
-  arrange(-n)
-</code></pre>
+  arrange(-n)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5jb2wiOjIsIm5yb3ciOjE1fSwicmRmIjoiSDRzSUFBQUFBQUFBQm0xU1hXN0NNQXhPb1MyamdvRzBDK3dDVkJyYlRyQWRZTm9UcjZZSnRDTTRWWDVndk8zS3V3Q2RXeEswVmF2azFQNCt4NDUvM2w5WGo5a3FZNHdOMlRDTjJEQWhsYVV2YncvTDV5Vmo4WUNzaU1WczNQNC95ZXVPbEJhY2s4dzhrVnAxVWhhOE5TNUtjZEJLQ3V1QmhDdStGZDZJTjBwenIyY0hKWGZtQ0Z1QmdRWEhxeEFWSzJNZ01LUHk1SkREbFRSdURkcUZES1VpTHNUNEVLSU9HU1FndjlmcUlIU0lJeXNzbEx5RzNRdGRPSDBLWnEzUVZsQ1FPdTBLWkd4Q2N0T1QxRXZzWmZDLy9PbGVVa2d3eG5jdWdCa0hDL2xHdzE3MDNNZGFIWE1rM1BpM0RMN29hSnJtdXg4M09NMjdwQmR3c2dkMEd5aXMwOWZLSTZUajNMczlVcld0Rk5MOVFUdlpwUGUrU1BlQW1jTTJIMThVcGNQZDRxbXRvYU12MzlUcnMxKzZiMFRjK0ZCSkdLSEFiWVZoTHhJSmF5RzljVXZGZDJYbHRhNHc3RkZHcU1rdGJWcnd5MmlTQWVscVkrY2ZCdEx6emRFQ0FBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["manufacturer"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"toyota","2":"12"},{"1":"chevrolet","2":"8"},{"1":"dodge","2":"8"},{"1":"ford","2":"8"},{"1":"volkswagen","2":"8"},{"1":"audi","2":"6"},{"1":"nissan","2":"6"},{"1":"hyundai","2":"4"},{"1":"subaru","2":"4"},{"1":"honda","2":"2"},{"1":"jeep","2":"2"},{"1":"land rover","2":"2"},{"1":"lincoln","2":"2"},{"1":"mercury","2":"2"},{"1":"pontiac","2":"2"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[15]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
+<pre class="r"><code>NA</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Dodge has the most models in the original dataset.<br />
-The model with the most variation is caravan 2wd. If we remove the drive train from the model, toyota is the manufacturuer with the most models.</p>
-<!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogImdncGxvdDI6IDIgR2V0dGluZyBTdGFydGVkIHdpdGggZ2dwbG90MiINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNClRoaXMgbm90ZWJvb2sgaXMgYmFzZWQgb24gZXhlcmNpc2VzIGNvbXBsZXRlZCBmcm9tIFtnZ3Bsb3QyOiBFbGVnYW50IEdyYXBoaWNzIGZvciBEYXRhIEFuYWx5c2lzXShodHRwczovL2dncGxvdDItYm9vay5vcmcvaW5kZXguaHRtbCkuIFdlIHdpbGwgd29yayB0aHJvdWdoIHRoZSBleGVyY2lzZXMgdG9nZXRoZXIuDQoNCmBgYHtyIHNldHVwfQ0KDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCg0KYGBgDQoNCg0KIyMgMi4yLjEgRnVlbCBlY29ub215IGRhdGENCg0KMS5MaXN0IGZpdmUgZnVuY3Rpb25zIHRoYXQgeW91IGNvdWxkIHVzZSB0byBnZXQgbW9yZSBpbmZvcm1hdGlvbiBhYm91dCB0aGUgbXBnIGRhdGFzZXQuDQoNCmBgYHtyfQ0Kc3RyKG1wZykNCmhlYWQobXBnKQ0KdGFpbChtcGcpDQpuYW1lcyhtcGcpDQoNCiMgb3BlbnMgZGF0YSBpbiBSU3R1ZGlvLCBidXQgbm90IHZpc2libGUgaW4gUiBub3RlYm9vaw0KVmlldyhtcGcpDQoNCmBgYA0KDQoNCjIuSG93IGNhbiB5b3UgZmluZCBvdXQgd2hhdCBvdGhlciBkYXRhc2V0cyBhcmUgaW5jbHVkZWQgd2l0aCBnZ3Bsb3QyPw0KDQpgYGB7cn0NCmRhdGEocGFja2FnZSA9ICJnZ3Bsb3QyIikNCiMgb3BlbnMgd2luZG93IGluIFJTdHVkaW8gYW5kIGxpc3RlZCB0aGUgYXNzb2NpYXRlZCBkYXRhDQpgYGANCg0KRGF0YSBzZXRzIGluIHBhY2thZ2Ug4oCYZ2dwbG90MuKAmToNCg0KZGlhbW9uZHMgICAgICAgICAgICAgICAgICAgICBQcmljZXMgb2Ygb3ZlciA1MCwwMDAgcm91bmQgY3V0IGRpYW1vbmRzDQplY29ub21pY3MgICAgICAgICAgICAgICAgICAgIFVTIGVjb25vbWljIHRpbWUgc2VyaWVzDQplY29ub21pY3NfbG9uZyAgICAgICAgICAgICAgIFVTIGVjb25vbWljIHRpbWUgc2VyaWVzDQpmYWl0aGZ1bGQgICAgICAgICAgICAgICAgICAgIDJkIGRlbnNpdHkgZXN0aW1hdGUgb2YgT2xkIEZhaXRoZnVsIGRhdGENCmx1dl9jb2xvdXJzICAgICAgICAgICAgICAgICAgJ2NvbG9ycygpJyBpbiBMdXYgc3BhY2UNCm1pZHdlc3QgICAgICAgICAgICAgICAgICAgICAgTWlkd2VzdCBkZW1vZ3JhcGhpY3MNCm1wZyAgICAgICAgICAgICAgICAgICAgICAgICAgRnVlbCBlY29ub215IGRhdGEgZnJvbSAxOTk5IHRvIDIwMDggZm9yIDM4IHBvcHVsYXIgbW9kZWxzDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9mIGNhcnMNCm1zbGVlcCAgICAgICAgICAgICAgICAgICAgICAgQW4gdXBkYXRlZCBhbmQgZXhwYW5kZWQgdmVyc2lvbiBvZiB0aGUgbWFtbWFscyBzbGVlcA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhc2V0DQpwcmVzaWRlbnRpYWwgICAgICAgICAgICAgICAgIFRlcm1zIG9mIDExIHByZXNpZGVudHMgZnJvbSBFaXNlbmhvd2VyIHRvIE9iYW1hDQpzZWFscyAgICAgICAgICAgICAgICAgICAgICAgIFZlY3RvciBmaWVsZCBvZiBzZWFsIG1vdmVtZW50cw0KdHhob3VzaW5nICAgICAgICAgICAgICAgICAgICBIb3VzaW5nIHNhbGVzIGluIFRYDQoNCg0KMy5BcGFydCBmcm9tIHRoZSBVUywgbW9zdCBjb3VudHJpZXMgdXNlIGZ1ZWwgY29uc3VtcHRpb24gKGZ1ZWwgY29uc3VtZWQgb3ZlciBmaXhlZCBkaXN0YW5jZSkgcmF0aGVyIHRoYW4gZnVlbCBlY29ub215IChkaXN0YW5jZSB0cmF2ZWxsZWQgd2l0aCBmaXhlZCBhbW91bnQgb2YgZnVlbCkuIEhvdyBjb3VsZCB5b3UgY29udmVydCBjdHkgYW5kIGh3eSBpbnRvIHRoZSBFdXJvcGVhbiBzdGFuZGFyZCBvZiBsLzEwMGttPw0KDQpgYGB7cn0NCg0KIyBjb252ZXJzaW9uIHZhbHVlcyBmcm9tIGh0dHBzOi8vd3d3LmFza251bWJlcnMuY29tL21wZy10by1MMTAwa20uYXNweCM6fjp0ZXh0PVRvJTIwY29udmVydCUyMG1wZyUyMHRvJTIwbGl0ZXJzLDkuOCUyMGxpdGVycyUyMHBlciUyMDEwMCUyMGttLg0KbXBnICU+JQ0KICBtdXRhdGUoY3R5X21ldHJpYyA9IHJvdW5kKDIzNS4yMTQvY3R5LDApLA0KICAgICAgICAgaHd5X21ldHJpYyA9IHJvdW5kKDIzNS4yMTQvaHd5LDApKSAlPiUNCiAgc2VsZWN0KGN0eSwgY3R5X21ldHJpYywgaHd5LCBod3lfbWV0cmljKSAgDQoNCmBgYA0KDQoNCjQuV2hpY2ggbWFudWZhY3R1cmVyIGhhcyB0aGUgbW9zdCBtb2RlbHMgaW4gdGhpcyBkYXRhc2V0PyBXaGljaCBtb2RlbCBoYXMgdGhlIG1vc3QgdmFyaWF0aW9ucz8gRG9lcyB5b3VyIGFuc3dlciBjaGFuZ2UgaWYgeW91IHJlbW92ZSB0aGUgcmVkdW5kYW50IHNwZWNpZmljYXRpb24gb2YgZHJpdmUgdHJhaW4gKGUuZy4g4oCccGF0aGZpbmRlciA0d2TigJ0sIOKAnGE0IHF1YXR0cm/igJ0pIGZyb20gdGhlIG1vZGVsIG5hbWU/DQoNCmBgYHtyfQ0KIyBtb3N0IG1vZGVscyBieSBtYW51ZmFjdHVyZXINCm1wZyAlPiUNCiAgZ3JvdXBfYnkobWFudWZhY3R1cmVyKSAlPiUNCiAgY291bnQoKSAlPiUNCiAgYXJyYW5nZSgtbikNCg0KIyBtb3N0IHZhcmlhdGlvbiBpbiBhIG1vZGVsIGRlZmluZWQgYXMgdGhlIG1vc3QgZW50cmllcyBwZXIgb25lIG1vZGVsDQptcGcgJT4lDQogIGdyb3VwX2J5KG1vZGVsKSAlPiUNCiAgY291bnQoKSAlPiUNCiAgYXJyYW5nZSgtbikNCg0KIyByZW1vdmUgcmVkdW5kYW50IHNwZWNpZmljYXRpb24gaW4gbW9kZWwgbmFtZSwgdGhlbiByZWNvdW50IG1vZGVscyBwZXIgbWFudWZhY3R1cmVyDQptcGcgJT4lDQogIG11dGF0ZShtb2RlbF9zaW1wbGUgPSBzdHJfcmVwbGFjZV9hbGwobW9kZWwsIGMoInF1YXR0cm8iID0gIiIsICI0d2QiID0gIiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIjJ3ZCIgPSAiIiwgImF3ZCIgPSAiIikpKSAlPiUNCiAgZGlzdGluY3QobWFudWZhY3R1cmVyLCBtb2RlbF9zaW1wbGUsIHllYXIpICU+JQ0KICBncm91cF9ieShtYW51ZmFjdHVyZXIpICU+JQ0KICBjb3VudCgpICU+JQ0KICBhcnJhbmdlKC1uKQ0KDQpgYGANCg0KRG9kZ2UgaGFzIHRoZSBtb3N0IG1vZGVscyBpbiB0aGUgb3JpZ2luYWwgZGF0YXNldC4gIA0KVGhlIG1vZGVsIHdpdGggdGhlIG1vc3QgdmFyaWF0aW9uIGlzIGNhcmF2YW4gMndkLg0KSWYgd2UgcmVtb3ZlIHRoZSBkcml2ZSB0cmFpbiBmcm9tIHRoZSBtb2RlbCwgdG95b3RhIGlzIHRoZSBtYW51ZmFjdHVydWVyIHdpdGggdGhlIG1vc3QgbW9kZWxzLg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogImdncGxvdDI6IDIgR2V0dGluZyBTdGFydGVkIHdpdGggZ2dwbG90MiINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNClRoaXMgbm90ZWJvb2sgaXMgYmFzZWQgb24gZXhlcmNpc2VzIGNvbXBsZXRlZCBmcm9tIFtnZ3Bsb3QyOiBFbGVnYW50IEdyYXBoaWNzIGZvciBEYXRhIEFuYWx5c2lzXShodHRwczovL2dncGxvdDItYm9vay5vcmcvaW5kZXguaHRtbCkuIA0KDQpgYGB7ciBzZXR1cCwgd2FybmluZz1GQUxTRSxtZXNzYWdlPUZBTFNFfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQoNCmBgYA0KDQoNCiMjIDIuMi4xIEZ1ZWwgZWNvbm9teSBkYXRhDQoNCjEuTGlzdCBmaXZlIGZ1bmN0aW9ucyB0aGF0IHlvdSBjb3VsZCB1c2UgdG8gZ2V0IG1vcmUgaW5mb3JtYXRpb24gYWJvdXQgdGhlIG1wZyBkYXRhIHNldC4NCg0KYGBge3J9DQpzdHIobXBnKQ0KaGVhZChtcGcpDQp0YWlsKG1wZykNCm5hbWVzKG1wZykNCg0KIyBvcGVucyBkYXRhIGluIFJTdHVkaW8sIGJ1dCBub3QgdmlzaWJsZSBpbiBSIG5vdGVib29rDQpWaWV3KG1wZykNCg0KYGBgDQoNCg0KMi5Ib3cgY2FuIHlvdSBmaW5kIG91dCB3aGF0IG90aGVyIGRhdGEgc2V0cyBhcmUgaW5jbHVkZWQgd2l0aCBnZ3Bsb3QyPw0KDQpgYGB7cn0NCmRhdGEocGFja2FnZSA9ICJnZ3Bsb3QyIikNCiMgb3BlbnMgd2luZG93IGluIFJTdHVkaW8gYW5kIGxpc3RzIHRoZSBhc3NvY2lhdGVkIGRhdGENCmBgYA0KDQpEYXRhIHNldHMgaW4gcGFja2FnZSDigJhnZ3Bsb3Qy4oCZOg0KDQpkaWFtb25kcyAgICAgICAgICAgICAgICAgICAgIFByaWNlcyBvZiBvdmVyIDUwLDAwMCByb3VuZCBjdXQgZGlhbW9uZHMgIA0KZWNvbm9taWNzICAgICAgICAgICAgICAgICAgICBVUyBlY29ub21pYyB0aW1lIHNlcmllcyAgDQplY29ub21pY3NfbG9uZyAgICAgICAgICAgICAgIFVTIGVjb25vbWljIHRpbWUgc2VyaWVzICANCmZhaXRoZnVsZCAgICAgICAgICAgICAgICAgICAgMmQgZGVuc2l0eSBlc3RpbWF0ZSBvZiBPbGQgRmFpdGhmdWwgZGF0YSAgDQpsdXZfY29sb3VycyAgICAgICAgICAgICAgICAgICdjb2xvcnMoKScgaW4gTHV2IHNwYWNlICANCm1pZHdlc3QgICAgICAgICAgICAgICAgICAgICAgTWlkd2VzdCBkZW1vZ3JhcGhpY3MgIA0KbXBnICAgICAgICAgICAgICAgICAgICAgICAgICBGdWVsIGVjb25vbXkgZGF0YSBmcm9tIDE5OTkgdG8gMjAwOCBmb3IgMzggcG9wdWxhciBtb2RlbHMNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb2YgY2FycyAgDQptc2xlZXAgICAgICAgICAgICAgICAgICAgICAgIEFuIHVwZGF0ZWQgYW5kIGV4cGFuZGVkIHZlcnNpb24gb2YgdGhlIG1hbW1hbHMgc2xlZXANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YXNldCAgDQpwcmVzaWRlbnRpYWwgICAgICAgICAgICAgICAgIFRlcm1zIG9mIDExIHByZXNpZGVudHMgZnJvbSBFaXNlbmhvd2VyIHRvIE9iYW1hICANCnNlYWxzICAgICAgICAgICAgICAgICAgICAgICAgVmVjdG9yIGZpZWxkIG9mIHNlYWwgbW92ZW1lbnRzICANCnR4aG91c2luZyAgICAgICAgICAgICAgICAgICAgSG91c2luZyBzYWxlcyBpbiBUWCAgDQoNCg0KMy5BcGFydCBmcm9tIHRoZSBVUywgbW9zdCBjb3VudHJpZXMgdXNlIGZ1ZWwgY29uc3VtcHRpb24gKGZ1ZWwgY29uc3VtZWQgb3ZlciBmaXhlZCBkaXN0YW5jZSkgcmF0aGVyIHRoYW4gZnVlbCBlY29ub215IChkaXN0YW5jZSB0cmF2ZWxsZWQgd2l0aCBmaXhlZCBhbW91bnQgb2YgZnVlbCkuIEhvdyBjb3VsZCB5b3UgY29udmVydCBjdHkgYW5kIGh3eSBpbnRvIHRoZSBFdXJvcGVhbiBzdGFuZGFyZCBvZiBsLzEwMGttPw0KDQpDb252ZXJzaW9uIHZhbHVlcyBmcm9tIFt0aGlzIHdlYnNpdGVdKGh0dHBzOi8vd3d3LmFza251bWJlcnMuY29tL21wZy10by1MMTAwa20uYXNweCM6fjp0ZXh0PVRvJTIwY29udmVydCUyMG1wZyUyMHRvJTIwbGl0ZXJzLDkuOCUyMGxpdGVycyUyMHBlciUyMDEwMCUyMGttKSAgDQoNCmBgYHtyfQ0KDQptcGcgJT4lDQogIG11dGF0ZShjdHlfbWV0cmljID0gcm91bmQoMjM1LjIxNC9jdHksMCksDQogICAgICAgICBod3lfbWV0cmljID0gcm91bmQoMjM1LjIxNC9od3ksMCkpICU+JQ0KICBzZWxlY3QoY3R5LCBjdHlfbWV0cmljLCBod3ksIGh3eV9tZXRyaWMpICANCg0KYGBgDQoNCg0KNC5XaGljaCBtYW51ZmFjdHVyZXIgaGFzIHRoZSBtb3N0IG1vZGVscyBpbiB0aGlzIGRhdGFzZXQ/IFdoaWNoIG1vZGVsIGhhcyB0aGUgbW9zdCB2YXJpYXRpb25zPyBEb2VzIHlvdXIgYW5zd2VyIGNoYW5nZSBpZiB5b3UgcmVtb3ZlIHRoZSByZWR1bmRhbnQgc3BlY2lmaWNhdGlvbiBvZiBkcml2ZSB0cmFpbiAoZS5nLiDigJxwYXRoZmluZGVyIDR3ZOKAnSwg4oCcYTQgcXVhdHRyb+KAnSkgZnJvbSB0aGUgbW9kZWwgbmFtZT8NCg0KRG9kZ2UgaGFzIHRoZSBtb3N0IG1vZGVscyBpbiB0aGUgb3JpZ2luYWwgZGF0YSBzZXQuICANClRoZSBtb2RlbCB3aXRoIHRoZSBtb3N0IHZhcmlhdGlvbiBpcyBjYXJhdmFuIDJ3ZC4gIA0KSWYgd2UgcmVtb3ZlIHRoZSBkcml2ZSB0cmFpbiBmcm9tIHRoZSBtb2RlbCwgVG95b3RhIGlzIHRoZSBtYW51ZmFjdHVyZXIgd2l0aCB0aGUgbW9zdCBtb2RlbHMuICANCg0KYGBge3J9DQojIG1vc3QgbW9kZWxzIGJ5IG1hbnVmYWN0dXJlcg0KbXBnICU+JQ0KICBncm91cF9ieShtYW51ZmFjdHVyZXIpICU+JQ0KICBjb3VudCgpICU+JQ0KICBhcnJhbmdlKC1uKQ0KDQojIG1vc3QgdmFyaWF0aW9uIGluIGEgbW9kZWwgZGVmaW5lZCBhcyB0aGUgbW9zdCBlbnRyaWVzIHBlciBvbmUgbW9kZWwNCm1wZyAlPiUNCiAgZ3JvdXBfYnkobW9kZWwpICU+JQ0KICBjb3VudCgpICU+JQ0KICBhcnJhbmdlKC1uKQ0KDQojIHJlbW92ZSByZWR1bmRhbnQgc3BlY2lmaWNhdGlvbiBpbiBtb2RlbCBuYW1lLCB0aGVuIHJlY291bnQgbW9kZWxzIHBlciBtYW51ZmFjdHVyZXINCm1wZyAlPiUNCiAgbXV0YXRlKG1vZGVsX3NpbXBsZSA9IHN0cl9yZXBsYWNlX2FsbChtb2RlbCwgYygicXVhdHRybyIgPSAiIiwgIjR3ZCIgPSAiIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiMndkIiA9ICIiLCAiYXdkIiA9ICIiKSkpICU+JQ0KICBkaXN0aW5jdChtYW51ZmFjdHVyZXIsIG1vZGVsX3NpbXBsZSwgeWVhcikgJT4lDQogIGdyb3VwX2J5KG1hbnVmYWN0dXJlcikgJT4lDQogIGNvdW50KCkgJT4lDQogIGFycmFuZ2UoLW4pDQpgYGANCg==</div>
 
 
 
