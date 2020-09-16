@@ -1,5 +1,5 @@
 ---
-title: "ggplot2: 2 Getting Started with ggplot2"
+title: "ggplot2: 2 First Steps"
 output: html_notebook
 ---
 
@@ -8,10 +8,13 @@ This notebook is based on exercises completed from [ggplot2: Elegant Graphics fo
 ```{r setup, warning=FALSE,message=FALSE}
 library(tidyverse)
 
+# set global theme for graphs
+theme_set(theme_bw())
+
 ```
 
 
-## 2.2.1 Fuel economy data
+## 2.2.1 Fuel Economy Data
 
 1.List five functions that you could use to get more information about the mpg data set.
 
@@ -93,3 +96,87 @@ mpg %>%
   count() %>%
   arrange(-n)
 ```
+
+### 2.3 Key Components
+
+1. How would you describe the relationship between cty and hwy? Do you have any concerns about drawing conclusions from that plot?
+
+As fuel economy goes up in city driving, it also goes up for highway driving. Positive, linear relationship. Concerns?
+
+```{r}
+
+ggplot(mpg, aes(cty, hwy)) +
+  geom_point()
+
+```
+
+
+2. What does ggplot(mpg, aes(model, manufacturer)) + geom_point() show? Is it useful? How could you modify the data to make it more informative?
+
+Each model only belongs to one manufacturer so not really useful. Perhaps count models by manufacturer?
+
+```{r}
+
+ggplot(mpg, aes(model, manufacturer)) + 
+    geom_point() +
+  # added so I could read text on x-axis
+    theme(axis.text.x = element_text(angle = 90))
+
+ggplot(mpg, aes(manufacturer)) + 
+    geom_bar() +
+    theme(axis.text.x = element_text(angle = 90))
+
+```
+
+
+3. Describe the data, aesthetic mappings and layers used for each of the following plots. You’ll need to guess a little because you haven’t seen all the datasets and functions yet, but use your common sense! See if you can predict what the plot will look like before running the code.
+
+```{r}
+
+ggplot(mpg, aes(cty, hwy)) + 
+  geom_point()
+
+ggplot(diamonds, aes(carat, price)) +
+  geom_point()
+
+ggplot(economics, aes(date, unemploy)) + 
+  geom_line()
+
+```
+
+## 2.4.1 Colour, size, shape and other aesthetic attributes
+
+1. Experiment with the colour, shape and size aesthetics. What happens when you map them to continuous values? What about categorical values? What happens when you use more than one aesthetic in a plot?
+
+2. What happens if you map a continuous variable to shape? Why? What happens if you map trans to shape? Why?
+
+3. How is drive train related to fuel economy? How is drive train related to engine size and class?
+
+## 2.5.1 Facetting
+
+1. What happens if you try to facet by a continuous variable like hwy? What about cyl? What’s the key difference?
+
+2. Use facetting to explore the 3-way relationship between fuel economy, engine size, and number of cylinders. How does facetting by number of cylinders change your assessement of the relationship between engine size and fuel economy?
+
+3. Read the documentation for facet_wrap(). What arguments can you use to control how many rows and columns appear in the output?
+
+4. What does the scales argument to facet_wrap() do? When might you use it?
+
+## 2.6.6 Plot Geoms
+
+1. What’s the problem with the plot created by ggplot(mpg, aes(cty, hwy)) + geom_point()? Which of the geoms described above is most effective at remedying the problem?
+
+2. One challenge with ggplot(mpg, aes(class, hwy)) + geom_boxplot() is that the ordering of class is alphabetical, which is not terribly useful. How could you change the factor levels to be more informative?
+
+  Rather than reordering the factor by hand, you can do it automatically based on the data: ggplot(mpg, aes(reorder(class, hwy), hwy)) + geom_boxplot(). What does reorder() do? Read the documentation.
+
+3. Explore the distribution of the carat variable in the diamonds dataset. What binwidth reveals the most interesting patterns?
+
+4. Explore the distribution of the price variable in the diamonds data. How does the distribution vary by cut?
+
+5. You now know (at least) three ways to compare the distributions of subgroups: geom_violin(), geom_freqpoly() and the colour aesthetic, or geom_histogram() and facetting. What are the strengths and weaknesses of each approach? What other approaches could you try?
+
+6. Read the documentation for geom_bar(). What does the weight aesthetic do?
+
+7. Using the techniques already discussed in this chapter, come up with three ways to visualise a 2d categorical distribution. Try them out by visualising the distribution of model and manufacturer, trans and class, and cyl and trans.
+  
