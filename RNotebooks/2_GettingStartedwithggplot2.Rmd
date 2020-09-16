@@ -3,10 +3,9 @@ title: "ggplot2: 2 Getting Started with ggplot2"
 output: html_notebook
 ---
 
-This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). We will work through the exercises together.
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
 
-```{r setup}
-
+```{r setup, warning=FALSE,message=FALSE}
 library(tidyverse)
 
 ```
@@ -14,7 +13,7 @@ library(tidyverse)
 
 ## 2.2.1 Fuel economy data
 
-1.List five functions that you could use to get more information about the mpg dataset.
+1.List five functions that you could use to get more information about the mpg data set.
 
 ```{r}
 str(mpg)
@@ -28,35 +27,36 @@ View(mpg)
 ```
 
 
-2.How can you find out what other datasets are included with ggplot2?
+2.How can you find out what other data sets are included with ggplot2?
 
 ```{r}
 data(package = "ggplot2")
-# opens window in RStudio and listed the associated data
+# opens window in RStudio and lists the associated data
 ```
 
 Data sets in package ‘ggplot2’:
 
-diamonds                     Prices of over 50,000 round cut diamonds
-economics                    US economic time series
-economics_long               US economic time series
-faithfuld                    2d density estimate of Old Faithful data
-luv_colours                  'colors()' in Luv space
-midwest                      Midwest demographics
+diamonds                     Prices of over 50,000 round cut diamonds  
+economics                    US economic time series  
+economics_long               US economic time series  
+faithfuld                    2d density estimate of Old Faithful data  
+luv_colours                  'colors()' in Luv space  
+midwest                      Midwest demographics  
 mpg                          Fuel economy data from 1999 to 2008 for 38 popular models
-                             of cars
+                             of cars  
 msleep                       An updated and expanded version of the mammals sleep
-                             dataset
-presidential                 Terms of 11 presidents from Eisenhower to Obama
-seals                        Vector field of seal movements
-txhousing                    Housing sales in TX
+                             dataset  
+presidential                 Terms of 11 presidents from Eisenhower to Obama  
+seals                        Vector field of seal movements  
+txhousing                    Housing sales in TX  
 
 
 3.Apart from the US, most countries use fuel consumption (fuel consumed over fixed distance) rather than fuel economy (distance travelled with fixed amount of fuel). How could you convert cty and hwy into the European standard of l/100km?
 
+Conversion values from [this website](https://www.asknumbers.com/mpg-to-L100km.aspx#:~:text=To%20convert%20mpg%20to%20liters,9.8%20liters%20per%20100%20km)  
+
 ```{r}
 
-# conversion values from https://www.asknumbers.com/mpg-to-L100km.aspx#:~:text=To%20convert%20mpg%20to%20liters,9.8%20liters%20per%20100%20km.
 mpg %>%
   mutate(cty_metric = round(235.214/cty,0),
          hwy_metric = round(235.214/hwy,0)) %>%
@@ -66,6 +66,10 @@ mpg %>%
 
 
 4.Which manufacturer has the most models in this dataset? Which model has the most variations? Does your answer change if you remove the redundant specification of drive train (e.g. “pathfinder 4wd”, “a4 quattro”) from the model name?
+
+Dodge has the most models in the original data set.  
+The model with the most variation is caravan 2wd.  
+If we remove the drive train from the model, Toyota is the manufacturer with the most models.  
 
 ```{r}
 # most models by manufacturer
@@ -88,9 +92,4 @@ mpg %>%
   group_by(manufacturer) %>%
   count() %>%
   arrange(-n)
-
 ```
-
-Dodge has the most models in the original dataset.  
-The model with the most variation is caravan 2wd.
-If we remove the drive train from the model, toyota is the manufacturuer with the most models.
