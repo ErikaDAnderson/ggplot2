@@ -7,6 +7,7 @@ This notebook is based on exercises completed from [ggplot2: Elegant Graphics fo
 
 ```{r setup, warning=FALSE,message=FALSE}
 library(tidyverse)
+#library(ggplot2)
 
 # set global theme for graphs
 theme_set(theme_bw())
@@ -19,13 +20,18 @@ theme_set(theme_bw())
 1.List five functions that you could use to get more information about the mpg data set.
 
 ```{r}
+summary(mpg)
+length(mpg)
 str(mpg)
 head(mpg)
 tail(mpg)
 names(mpg)
+nrow(mpg)
+class(mpg)
+glimpse(mpg)
 
 # opens data in RStudio, but not visible in R notebook
-View(mpg)
+#View(mpg)
 
 ```
 
@@ -65,6 +71,18 @@ mpg %>%
          hwy_metric = round(235.214/hwy,0)) %>%
   select(cty, cty_metric, hwy, hwy_metric)  
 
+mpg %>%
+    mutate(ecty = (3.78541*100)/(1.609344*cty)) %>%
+    mutate(ehwy = (3.78541*100)/(1.609344*hwy)) %>%
+    select(cty, ecty, hwy, ehwy) 
+
+mpg %>%
+ mutate(
+ cty_euro = 235.214583/cty,
+ hwy_euro = 235.214583/hwy
+ ) %>%
+  select(cty, cty_euro, hwy, hwy_euro)
+
 ```
 
 
@@ -81,11 +99,33 @@ mpg %>%
   count() %>%
   arrange(-n)
 
+# JN version assuming year not unique to model 
+mpg %>%
+ count(manufacturer, sort = T)
+
+mpg %>%
+ group_by(manufacturer) %>%
+ summarise(num.models = length(unique(model))) %>%
+ arrange(desc(num.models))
+
+# ST version
+mpg %>%
+ group_by(manufacturer) %>%
+ summarise(n_distinct(model))
+
+# CG version
+mpg %>% 
+  group_by(model) %>% 
+  tally()
+
 # most variation in a model defined as the most entries per one model
 mpg %>%
   group_by(model) %>%
   count() %>%
   arrange(-n)
+
+# BH version in base R
+with(mpg,tapply(model,model,length))
 
 # remove redundant specification in model name, then recount models per manufacturer
 mpg %>%
@@ -95,6 +135,31 @@ mpg %>%
   group_by(manufacturer) %>%
   count() %>%
   arrange(-n)
+
+mpg %>%
+  mutate(model_simple = str_replace_all(model, c("quattro" = "", "4wd" = "",
+                                              "2wd" = "", "awd" = ""))) %>%
+  distinct(manufacturer, model_simple) %>%
+  group_by(manufacturer) %>%
+  count() %>%
+  arrange(-n)
+
+# JN version
+#to get rid of drive train complication
+ sort(unique(mpg$model)) #looks like first 2 letters should be enough to split
+
+ mpg %>%
+   transform(model, base = substr(model, 1, 2)) %>%
+   group_by(manufacturer) %>%
+   summarise(num.models = length(unique(base))) %>%
+   arrange(desc(num.models))
+ 
+ list(unique(mpg$model[mpg$manufacturer=="audi"])) #the above method took audi from 3 ->2, seems to work
+ 
+ list(unique(mpg$model[mpg$manufacturer=="toyota"])) #the above method took audi from 6 ->5, seems to work
+ 
+ list(unique(mpg$model[mpg$manufacturer=="dodge"])) #the above method didn't affect Dodge, seems to work
+ 
 ```
 
 ### 2.3 Key Components
