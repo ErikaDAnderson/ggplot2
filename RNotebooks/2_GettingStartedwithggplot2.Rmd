@@ -145,8 +145,8 @@ mpg %>%
   arrange(-n)
 
 # JN version
-#to get rid of drive train complication
- sort(unique(mpg$model)) #looks like first 2 letters should be enough to split
+# to get rid of drive train complication
+sort(unique(mpg$model)) #looks like first 2 letters should be enough to split
 
  mpg %>%
    transform(model, base = substr(model, 1, 2)) %>%
@@ -178,7 +178,7 @@ ggplot(mpg, aes(cty, hwy)) +
 
 2. What does ggplot(mpg, aes(model, manufacturer)) + geom_point() show? Is it useful? How could you modify the data to make it more informative?
 
-Each model only belongs to one manufacturer so not really useful. Perhaps count models by manufacturer?
+Each model only belongs to one manufacturer so not useful. Perhaps count models by manufacturer?
 
 ```{r}
 
@@ -213,9 +213,88 @@ ggplot(economics, aes(date, unemploy)) +
 
 1. Experiment with the colour, shape and size aesthetics. What happens when you map them to continuous values? What about categorical values? What happens when you use more than one aesthetic in a plot?
 
+```{r}
+
+# color continuous
+mpg %>%
+  ggplot(aes(displ, hwy, color = year)) +
+  geom_point()
+
+# color categorical
+mpg %>%
+  ggplot(aes(displ, hwy, color = class)) +
+  geom_point()
+
+# # shape continuous
+# mpg %>%
+#   ggplot(aes(displ, hwy, shape = year)) +
+#   geom_point()
+# # gives following error
+# # Error: A continuous variable can not be mapped to shape
+
+# shape categorical
+mpg %>%
+  ggplot(aes(displ, hwy, shape = as.factor(cyl))) +
+  geom_point()
+
+# size continuous
+mpg %>%
+  ggplot(aes(displ, hwy, size = cyl)) +
+  geom_point()
+
+# size categorical
+mpg %>%
+  ggplot(aes(displ, hwy, size = class)) +
+  geom_point()
+
+# combine two aethetics
+mpg %>%
+  ggplot(aes(displ, hwy, color = class, size = cty)) +
+  geom_point()
+
+```
+
+
 2. What happens if you map a continuous variable to shape? Why? What happens if you map trans to shape? Why?
 
+A continuous value cannot be mapped to shape  
+Mapping trans to shape gives a warning since it has too many values to be easily visible: 	
+The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate; you have 10. Consider specifying shapes manually if you must have them.
+
+```{r}
+
+# # shape continuous
+# mpg %>%
+#    ggplot(aes(displ, hwy, shape = year)) +
+#    geom_point()
+# # gives following error
+# # Error: A continuous variable can not be mapped to shape
+
+# trans to shape
+mpg %>%
+  ggplot(aes(displ, hwy, shape = trans)) +
+  geom_point()
+
+
+```
+
+
 3. How is drive train related to fuel economy? How is drive train related to engine size and class?
+
+```{r}
+
+# drive train to fuel economy
+mpg %>%
+  ggplot(aes(hwy, cty, color = drv)) +
+  geom_point() 
+
+# drive train to engine size and class
+mpg %>%
+  ggplot(aes(displ, class, color = drv)) +
+  geom_point()
+
+```
+
 
 ## 2.5.1 Facetting
 
