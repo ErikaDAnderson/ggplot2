@@ -166,19 +166,20 @@ sort(unique(mpg$model)) #looks like first 2 letters should be enough to split
 
 1. How would you describe the relationship between cty and hwy? Do you have any concerns about drawing conclusions from that plot?
 
-As fuel economy goes up in city driving, it also goes up for highway driving. Positive, linear relationship. Concerns?
+As fuel economy goes up in city driving, it also goes up for highway driving. Positive, linear relationship. Concerns? Variance at tails and likely rounding giving artificial lines. Function of speed...
 
 ```{r}
 
 ggplot(mpg, aes(cty, hwy)) +
-  geom_point()
+  geom_point() +
+  geom_smooth(method = "lm")
 
 ```
 
 
 2. What does ggplot(mpg, aes(model, manufacturer)) + geom_point() show? Is it useful? How could you modify the data to make it more informative?
 
-Each model only belongs to one manufacturer so not useful. Perhaps count models by manufacturer?
+Each model only belongs to one manufacturer so not useful. And some points hidden Perhaps count models by manufacturer?
 
 ```{r}
 
@@ -189,7 +190,15 @@ ggplot(mpg, aes(model, manufacturer)) +
 
 ggplot(mpg, aes(manufacturer)) + 
     geom_bar() +
-    theme(axis.text.x = element_text(angle = 90))
+    theme(axis.text.x = element_text(angle = 90)) 
+
+#AP version
+df <- mpg %>%
+ transmute("man_mod" = paste(manufacturer, model, sep = " "))
+
+ggplot(df, aes(man_mod)) +
+ geom_bar() +
+ coord_flip()
 
 ```
 
@@ -206,6 +215,12 @@ ggplot(diamonds, aes(carat, price)) +
 
 ggplot(economics, aes(date, unemploy)) + 
   geom_line()
+
+ggplot(mpg, aes(cty)) + 
+  geom_histogram(bins = 30)
+
+ggplot(mpg, aes(cty)) + 
+  geom_histogram(binwidth = 1)
 
 ```
 
