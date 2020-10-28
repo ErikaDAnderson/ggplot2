@@ -228,6 +228,8 @@ ggplot(mpg, aes(cty)) +
 
 1. Experiment with the colour, shape and size aesthetics. What happens when you map them to continuous values? What about categorical values? What happens when you use more than one aesthetic in a plot?
 
+Two legends are produced if you use >1 aesthetic in a plot.
+
 ```{r}
 
 # color continuous
@@ -274,7 +276,7 @@ mpg %>%
 
 A continuous value cannot be mapped to shape  
 Mapping trans to shape gives a warning since it has too many values to be easily visible: 	
-The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate; you have 10. Consider specifying shapes manually if you must have them.
+The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate; trans has 10. Consider specifying shapes manually if you must have them.
 
 ```{r}
 
@@ -296,6 +298,9 @@ mpg %>%
 
 3. How is drive train related to fuel economy? How is drive train related to engine size and class?
 
+Front wheel drive vehicles generally have better fuel economy than rear or 4 wheel drive.  
+Engine size is generally larger for 4 wheel drive vehicles which are generally larger types of vehicles such as trucks or SUV. Engine size is smaller for front wheel drive vehicles which are generally smaller engines. Rear wheel drive have larger engines either 2 seater sports cars, SUVs, and 4 sub compacts which larger engines.
+
 ```{r}
 
 # drive train to fuel economy
@@ -315,11 +320,85 @@ mpg %>%
 
 1. What happens if you try to facet by a continuous variable like hwy? What about cyl? What’s the key difference?
 
+Facetting is most useful with categorical variable. A continuous variable, such as hwy, has too many graphs with too few points. Using cyl gives a more informative set of graphs.
+
+
+```{r}
+
+# without facetting
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point()
+
+# try facetting by a continuous variable
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~hwy)
+
+# try facetting by a continuous variable
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~cyl)
+
+```
+
+
 2. Use facetting to explore the 3-way relationship between fuel economy, engine size, and number of cylinders. How does facetting by number of cylinders change your assessement of the relationship between engine size and fuel economy?
+
+As engines get bigger the fuel efficiency drops within each number of cylinders. The number of cylinders and engine displacement are related and go up together.
+
+```{r}
+
+# without facetting
+mpg %>%
+  ggplot(aes(displ, hwy, colour = as.factor(cyl))) +
+  geom_point()
+
+# with facetting
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~cyl)
+
+```
+
 
 3. Read the documentation for facet_wrap(). What arguments can you use to control how many rows and columns appear in the output?
 
+```{r}
+#?facet_wrap
+
+# example graph with number of columns controlled
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~cyl, nrow = 1)
+
+# example graph with number of rows controlled
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~cyl, ncol = 1)
+
+```
+
+
 4. What does the scales argument to facet_wrap() do? When might you use it?
+
+The scales arguement allows the axis (either x, y or both) to be different between graphs. The default is to fix all scales to the same range. This makes is harder to compare graphs, but may be necessary if the scales are very different between graphs so see the nuances.
+
+```{r}
+
+# example with scales argument
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~cyl, scales = "free_y")
+
+```
+
 
 ## 2.6.6 Plot Geoms
 
