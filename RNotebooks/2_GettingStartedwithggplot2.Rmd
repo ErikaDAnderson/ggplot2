@@ -418,3 +418,10 @@ mpg %>%
 
 7. Using the techniques already discussed in this chapter, come up with three ways to visualise a 2d categorical distribution. Try them out by visualising the distribution of model and manufacturer, trans and class, and cyl and trans.
   
+## 2.7 Modifying the axes
+
+No exercises
+
+## 2.8 Output
+
+No exercises
