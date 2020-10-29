@@ -397,6 +397,12 @@ mpg %>%
   geom_point() +
   facet_wrap(~cyl, scales = "free_y")
 
+# example CK
+mpg %>%
+  ggplot(aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~cyl, scales = "free")
+
 ```
 
 
