@@ -1,0 +1,73 @@
+---
+title: "ggplot2: 3 Individual Geoms"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+
+library(tidyverse)
+
+# set global theme for graphs
+theme_set(theme_bw())
+
+```
+
+#3.1.1 INdividual Geoms Exercises
+
+1. What geoms would you use to draw each of the following named plots?
+
+Scatterplot
+Line chart
+Histogram
+Bar chart
+Pie chart
+
+2. What’s the difference between geom_path() and geom_polygon()? What’s the difference between geom_path() and geom_line()?
+
+3. What low-level geoms are used to draw geom_smooth()? What about geom_boxplot() and geom_violin()?
+
+#4.5 Collective Geoms Exercises
+
+1. Draw a boxplot of hwy for each value of cyl, without turning cyl into a factor. What extra aesthetic do you need to set?
+
+2. Modify the following plot so that you get one boxplot per integer value of displ.
+
+```{r}
+ggplot(mpg, aes(displ, cty)) + 
+  geom_boxplot()
+```
+
+3. When illustrating the difference between mapping continuous and discrete colours to a line, the discrete example needed aes(group = 1). Why? What happens if that is omitted? What’s the difference between aes(group = 1) and aes(group = 2)? Why?
+
+4. How many bars are in each of the following plots?
+
+```{r}
+
+ggplot(mpg, aes(drv)) + 
+  geom_bar()
+
+ggplot(mpg, aes(drv, fill = hwy, group = hwy)) + 
+  geom_bar()
+
+library(dplyr)  
+mpg2 <- mpg %>% arrange(hwy) %>% mutate(id = seq_along(hwy)) 
+ggplot(mpg2, aes(drv, fill = hwy, group = id)) + 
+  geom_bar()
+
+```
+
+(Hint: try adding an outline around each bar with colour = "white")
+
+5. Install the babynames package. It contains data about the popularity of babynames in the US. Run the following code and fix the resulting graph. Why does this graph make me unhappy?
+
+```{r}
+
+library(babynames)
+hadley <- dplyr::filter(babynames, name == "Hadley")
+ggplot(hadley, aes(year, n)) + 
+  geom_line()
+
+```
+
