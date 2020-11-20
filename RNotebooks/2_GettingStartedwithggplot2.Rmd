@@ -408,21 +408,163 @@ mpg %>%
 
 ## 2.6.6 Plot Geoms
 
-1. What’s the problem with the plot created by ggplot(mpg, aes(cty, hwy)) + geom_point()? Which of the geoms described above is most effective at remedying the problem?
+1.What’s the problem with the plot created by ggplot(mpg, aes(cty, hwy)) + geom_point()? Which of the geoms described above is most effective at remedying the problem?
 
-2. One challenge with ggplot(mpg, aes(class, hwy)) + geom_boxplot() is that the ordering of class is alphabetical, which is not terribly useful. How could you change the factor levels to be more informative?
+The problem is the scatterplot has noise obscuring the data. Adding geom_smooth highlights the trend shown by the points.
 
-  Rather than reordering the factor by hand, you can do it automatically based on the data: ggplot(mpg, aes(reorder(class, hwy), hwy)) + geom_boxplot(). What does reorder() do? Read the documentation.
+```{r}
 
-3. Explore the distribution of the carat variable in the diamonds dataset. What binwidth reveals the most interesting patterns?
+# given
+ggplot(mpg, aes(cty, hwy)) +
+  geom_point()
 
-4. Explore the distribution of the price variable in the diamonds data. How does the distribution vary by cut?
+# add smoother to see trend
+ggplot(mpg, aes(cty, hwy)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = "y ~ x")
 
-5. You now know (at least) three ways to compare the distributions of subgroups: geom_violin(), geom_freqpoly() and the colour aesthetic, or geom_histogram() and facetting. What are the strengths and weaknesses of each approach? What other approaches could you try?
+```
 
-6. Read the documentation for geom_bar(). What does the weight aesthetic do?
 
-7. Using the techniques already discussed in this chapter, come up with three ways to visualise a 2d categorical distribution. Try them out by visualising the distribution of model and manufacturer, trans and class, and cyl and trans.
+2.One challenge with ggplot(mpg, aes(class, hwy)) + geom_boxplot() is that the ordering of class is alphabetical, which is not terribly useful. How could you change the factor levels to be more informative?
+
+```{r}
+
+# given
+ggplot(mpg, aes(class, hwy)) + 
+  geom_boxplot()
+
+# make class into a factor and organize the order
+mpg %>%
+  mutate(class = factor(class,
+                        levels = c("2seater","subcompact", "compact", 
+                                   "midsize","minivan", "suv", "pickup"))) %>%
+  
+  ggplot(., aes(class, hwy)) + 
+  geom_boxplot()
+
+```
+
+
+3.Rather than reordering the factor by hand, you can do it automatically based on the data: ggplot(mpg, aes(reorder(class, hwy), hwy)) + geom_boxplot(). What does reorder() do? Read the documentation.
+
+```{r}
+
+# reorder based on data
+  ggplot(mpg, aes(reorder(class, hwy), hwy)) +
+  geom_boxplot()
+
+```
+
+
+4.Explore the distribution of the carat variable in the diamonds dataset. What binwidth reveals the most interesting patterns?
+
+A better binwidth shows the marketing pattern of that whole numbers and even divisions are preferred.
+
+```{r}
+
+# default bins
+ggplot(diamonds, aes(carat)) +
+         geom_histogram()
+
+# better to see the pattern
+ggplot(diamonds, aes(carat)) +
+         geom_histogram(binwidth = 0.01)
+
+```
+
+
+5.Explore the distribution of the price variable in the diamonds data. How does the distribution vary by cut?
+
+```{r}
+
+# compare price distribution in cuts
+ggplot(diamonds, aes(price)) +
+  geom_freqpoly(binwidth = 200) +
+  facet_wrap(~cut)
+
+# compare to info in one graph
+ggplot(diamonds, aes(price, colour = cut)) +
+  geom_freqpoly(binwidth = 200) 
+
+# another way
+ggplot(diamonds, aes(price, fill = cut)) +
+  geom_histogram(binwidth = 200) +
+  facet_wrap(~cut)
+
+# with violin graph
+ggplot(diamonds, aes(cut, price)) +
+  geom_violin()
+
+```
+
+
+6.You now know (at least) three ways to compare the distributions of subgroups: geom_violin(), geom_freqpoly() and the colour aesthetic, or geom_histogram() and faceting. What are the strengths and weaknesses of each approach? What other approaches could you try?
+
+geom_violin - show a compact representation of the “density” of the distribution, highlighting the areas where more points are found. Weakness is that these graphs are harder to interpret.
+
+geom_freqpoly() and the colour aesthetic - easier to compare but distribution may overlap.
+ 
+geom_histogram() and faceting - easier to see individual distributions but harder to compare directly.
+
+other approaches: geom_boxplot...
+
+```{r}
+
+ggplot(diamonds, aes(cut, price)) +
+  geom_boxplot() 
+
+```
+
+
+7.Read the documentation for geom_bar(). What does the weight aesthetic do?
+
+geom_bar() makes the height of the bar proportional to the number of cases in each group (or if the weight aesthetic is supplied, the sum of the weights)
+
+```{r}
+#?geom_bar
+
+```
+
+8.Using the techniques already discussed in this chapter, come up with three ways to visualise a 2d categorical distribution. Try them out by visualising the distribution of model and manufacturer, trans and class, and cyl and trans.
+
+Stacked bar charts using geom_bar(position = "stack")
+
+Grouped bar chart using geom_bar(position = "dodge")
+
+Segmented bar chart using geom_bar(position = "fill")
+
+(or sta_bin_2d; Bubble graphs from ggpubr)
+
+
+```{r}
+
+ggplot(mpg, 
+       aes(x = manufacturer, 
+           fill = model)) + 
+  geom_bar(position = "fill") +
+  labs(y = "Proportion") +
+  coord_flip() +
+  theme(legend.position = "bottom")
+
+ggplot(mpg, aes(trans, fill = class)) +
+  geom_bar(position = "fill") +
+  theme(legend.position = "bottom") +
+  coord_flip()
+
+ggplot(mpg, aes(trans, fill = as.factor(cyl))) +
+  geom_bar(position = position_dodge(preserve = "single")) +
+  coord_flip()
+
+ggplot(mpg, aes(trans, as.factor(cyl))) +
+  stat_bin_2d() +
+  coord_flip()
+
+# something totally different for categorical data
+  ggpubr::ggballoonplot(mpg, fill = "trans")
+
+```
+
   
 ## 2.7 Modifying the axes
 
