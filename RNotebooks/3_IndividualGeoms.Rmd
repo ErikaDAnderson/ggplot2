@@ -14,7 +14,7 @@ theme_set(theme_bw())
 
 ```
 
-#3.1.1 INdividual Geoms Exercises
+#3.1.1 Individual Geoms Exercises
 
 1. What geoms would you use to draw each of the following named plots?
 
