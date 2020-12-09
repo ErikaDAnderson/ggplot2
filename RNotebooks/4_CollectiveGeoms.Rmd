@@ -1,0 +1,121 @@
+---
+title: "ggplot2: 4 Individual Geoms"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+
+library(tidyverse)
+
+# set global theme for graphs
+theme_set(theme_bw())
+
+```
+
+4.5 Collective Geoms Exercises
+
+1.Draw a boxplot of hwy for each value of cyl, without turning cyl into a factor. What extra aesthetic do you need to set?
+
+group by cylinder for extra aesthetic
+
+```{r}
+
+ggplot(mpg, aes(hwy, cyl, group = cyl)) +
+  geom_boxplot()
+
+```
+
+
+2.Modify the following plot so that you get one boxplot per integer value of displ.
+
+```{r}
+
+# given
+ggplot(mpg, aes(displ, cty)) + 
+  geom_boxplot()
+
+# one boxplot per integer value of displ
+ggplot(mpg, aes(displ, cty, group = as.integer(displ))) + 
+  geom_boxplot()
+
+```
+
+3.When illustrating the difference between mapping continuous and discrete colours to a line, the discrete example needed aes(group = 1). Why? What happens if that is omitted? What’s the difference between aes(group = 1) and aes(group = 2)? Why?
+
+If the group is omitted, the line is not draw because there is only one observation and no line able to be drawn. Group = 1 or group = 2 gives exactly the same output. Why?
+
+```{r}
+
+#given
+df <- data.frame(x = 1:3, y = 1:3, colour = c(1,3,5))
+
+# given
+ggplot(df, aes(x, y, colour = factor(colour))) + 
+  geom_line(aes(group = 1), size = 2) 
+
+# no group within geom_line
+ggplot(df, aes(x, y, colour = factor(colour))) + 
+  geom_line(size = 2) 
+# error given	
+#geom_path: Each group consists of only one observation. Do you need to adjust the group aesthetic?
+
+
+# group = 2 no difference from group = 1
+ggplot(df, aes(x, y, colour = factor(colour))) + 
+  geom_line(aes(group = 2),size = 2) 
+
+
+```
+
+
+4.How many bars are in each of the following plots?
+
+-the first plot has 3 bars
+-the second plot is grouped by hwy so has the number of hwy values as bars, or 27
+-the third plot is grouped by id which is the number of rows in the data, or 234
+
+Is this is correct? Graphs 2 and 3 look identical
+
+```{r}
+
+ggplot(mpg, aes(drv)) + 
+  geom_bar() +
+  labs(subtitle = "Bars = 3")
+
+ggplot(mpg, aes(drv, fill = hwy, group = hwy)) + 
+  geom_bar() +
+  labs(subtitle = str_c("Bars = ", length(unique(mpg$hwy))))
+
+library(dplyr)  
+mpg2 <- mpg %>% arrange(hwy) %>% mutate(id = seq_along(hwy)) 
+
+# the number of unique ids
+NumBars <- length(unique(mpg2$id))
+
+ggplot(mpg2, aes(drv, fill = hwy, group = id)) + 
+  geom_bar() +
+  labs(subtitle = str_c("Bars = ", NumBars))
+
+```
+
+5. Install the babynames package. It contains data about the popularity of babynames in the US. Run the following code and fix the resulting graph. Why does this graph make me unhappy?
+
+-increasing use of the name Hadley
+
+```{r}
+
+# given
+library(babynames)
+hadley <- dplyr::filter(babynames, name == "Hadley")
+ggplot(hadley, aes(year, n)) + 
+  geom_line()
+
+# fix graph by grouping by sex
+ggplot(hadley, aes(year, n)) + 
+  geom_line(aes(group = sex))
+
+
+```
+
