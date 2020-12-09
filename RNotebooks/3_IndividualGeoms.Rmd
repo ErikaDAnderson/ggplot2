@@ -18,56 +18,31 @@ theme_set(theme_bw())
 
 1. What geoms would you use to draw each of the following named plots?
 
-Scatterplot
-Line chart
-Histogram
-Bar chart
-Pie chart
+  1.Scatterplot - geom_point()
+  2.Line chart - geom_line
+  3.Histogram - geom_histogram()
+  4.Bar chart - geom_bar(stat = "identity")
+  5.Pie chart - geom_bar() + coord_polar() see example
+  
+```{r}
+
+# from https://ggplot2.tidyverse.org/reference/coord_polar.html
+pie <- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+ geom_bar(width = 1)
+pie + coord_polar(theta = "y")
+
+```
+  
 
 2. What’s the difference between geom_path() and geom_polygon()? What’s the difference between geom_path() and geom_line()?
 
+-geom_path draws a line in the order of the data whereas geom_polygon fills in the area between lines
+
+-geom_path draws the line in the order of the data whereas geom_line draws from left to right  
+
 3. What low-level geoms are used to draw geom_smooth()? What about geom_boxplot() and geom_violin()?
 
-#4.5 Collective Geoms Exercises
-
-1. Draw a boxplot of hwy for each value of cyl, without turning cyl into a factor. What extra aesthetic do you need to set?
-
-2. Modify the following plot so that you get one boxplot per integer value of displ.
-
-```{r}
-ggplot(mpg, aes(displ, cty)) + 
-  geom_boxplot()
-```
-
-3. When illustrating the difference between mapping continuous and discrete colours to a line, the discrete example needed aes(group = 1). Why? What happens if that is omitted? What’s the difference between aes(group = 1) and aes(group = 2)? Why?
-
-4. How many bars are in each of the following plots?
-
-```{r}
-
-ggplot(mpg, aes(drv)) + 
-  geom_bar()
-
-ggplot(mpg, aes(drv, fill = hwy, group = hwy)) + 
-  geom_bar()
-
-library(dplyr)  
-mpg2 <- mpg %>% arrange(hwy) %>% mutate(id = seq_along(hwy)) 
-ggplot(mpg2, aes(drv, fill = hwy, group = id)) + 
-  geom_bar()
-
-```
-
-(Hint: try adding an outline around each bar with colour = "white")
-
-5. Install the babynames package. It contains data about the popularity of babynames in the US. Run the following code and fix the resulting graph. Why does this graph make me unhappy?
-
-```{r}
-
-library(babynames)
-hadley <- dplyr::filter(babynames, name == "Hadley")
-ggplot(hadley, aes(year, n)) + 
-  geom_line()
-
-```
+-geom_smooth uses geom_line for the best fit line and geom_area for the standard error shading
+-geom_boxplot uses geom_rect or geom_tile
+-geom_violin uses geom_polygon  
 
