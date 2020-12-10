@@ -27,8 +27,10 @@ theme_set(theme_bw())
 ```{r}
 
 # from https://ggplot2.tidyverse.org/reference/coord_polar.html
-pie <- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
- geom_bar(width = 1)
+pie <- 
+  ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+  geom_bar(width = 1)
+
 pie + coord_polar(theta = "y")
 
 ```
@@ -42,7 +44,7 @@ pie + coord_polar(theta = "y")
 
 3. What low-level geoms are used to draw geom_smooth()? What about geom_boxplot() and geom_violin()?
 
--geom_smooth uses geom_line for the best fit line and geom_area for the standard error shading
--geom_boxplot uses geom_rect or geom_tile
--geom_violin uses geom_polygon  
+-geom_smooth uses geom_line for the best fit line and geom_area for the standard error shading  
+-geom_boxplot uses geom_rect or geom_tile or geom_area  
+-geom_violin uses geom_polygon or geom_hist (sideways)    
 
