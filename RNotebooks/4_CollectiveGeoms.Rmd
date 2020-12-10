@@ -22,6 +22,9 @@ group by cylinder for extra aesthetic
 
 ```{r}
 
+ggplot(mpg, aes(hwy, cyl)) +
+  geom_boxplot()
+
 ggplot(mpg, aes(hwy, cyl, group = cyl)) +
   geom_boxplot()
 
@@ -37,7 +40,11 @@ ggplot(mpg, aes(displ, cty)) +
   geom_boxplot()
 
 # one boxplot per integer value of displ
-ggplot(mpg, aes(displ, cty, group = as.integer(displ))) + 
+ggplot(mpg, aes(as.integer(displ), cty, group = as.integer(displ))) + 
+  geom_boxplot()
+
+# another way
+ggplot(mpg, aes(round(displ), cty, group = round(displ))) + 
   geom_boxplot()
 
 ```
@@ -85,7 +92,7 @@ ggplot(mpg, aes(drv)) +
   labs(subtitle = "Bars = 3")
 
 ggplot(mpg, aes(drv, fill = hwy, group = hwy)) + 
-  geom_bar() +
+  geom_bar(colour = "white") +
   labs(subtitle = str_c("Bars = ", length(unique(mpg$hwy))))
 
 library(dplyr)  
@@ -95,7 +102,7 @@ mpg2 <- mpg %>% arrange(hwy) %>% mutate(id = seq_along(hwy))
 NumBars <- length(unique(mpg2$id))
 
 ggplot(mpg2, aes(drv, fill = hwy, group = id)) + 
-  geom_bar() +
+  geom_bar(colour = "white") +
   labs(subtitle = str_c("Bars = ", NumBars))
 
 ```
