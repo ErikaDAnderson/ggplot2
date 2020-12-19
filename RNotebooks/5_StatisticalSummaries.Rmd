@@ -1,0 +1,121 @@
+---
+title: "ggplot2: 5 Statistical Summaries"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+
+library(tidyverse)
+
+# set global theme for graphs
+theme_set(theme_bw())
+
+```
+
+# 5.4.1 Displaying Distributions Executrices
+
+1.What binwidth tells you the most interesting story about the distribution of carat?
+
+500 shows the market divisions of 0.25, 0.5, 0.75 1.0 etc.
+
+```{r}
+
+# default
+diamonds %>%
+  ggplot(aes(carat)) +
+  geom_histogram(bins = 30) +
+  labs(subtitle = "Default 30 bins")
+
+# more bins
+diamonds %>%
+  ggplot(aes(carat)) +
+  geom_histogram(bins = 100)  +
+  labs(subtitle = "100 bins")
+
+# less bins
+diamonds %>%
+  ggplot(aes(carat)) +
+  geom_histogram(bins = 10)  +
+  labs(subtitle = "10 bins")
+
+# even more bins
+diamonds %>%
+  ggplot(aes(carat)) +
+  geom_histogram(bins = 500)  +
+  labs(subtitle = "Best with 500 bins")
+
+```
+
+
+2.Draw a histogram of price. What interesting patterns do you see?
+
+```{r}
+
+diamonds %>%
+  ggplot(aes(price)) +
+  geom_histogram(bins = 1000) +
+  xlim(400, 2000) +
+  labs(subtitle = "Where are all the $1500 diamonds?")
+
+diamonds %>%
+  ggplot(aes(price)) +
+  facet_wrap(~cut) +
+  geom_histogram(bins = 1000) +
+  #xlim(400, 5000) +
+  labs(subtitle = "More higher quality cuts than fair")
+```
+
+
+3.How does the distribution of price vary with clarity?
+
+```{r}
+
+diamonds %>%
+  ggplot(aes(price, fill = clarity, color = clarity)) +
+  geom_freqpoly()
+
+diamonds %>%
+  ggplot(aes(price, fill = clarity, color = clarity)) +
+  geom_histogram(bins = 1000, position = "fill", na.rm = TRUE)
+
+diamonds %>%
+  ggplot(aes(price, clarity)) +
+  geom_boxplot()
+
+diamonds %>%
+  ggplot(aes(price, clarity)) +
+  geom_violin()
+
+```
+
+
+4.Overlay a frequency polygon and density plot of depth. What computed variable do you need to map to y to make the two plots comparable? (You can either modify geom_freqpoly() or geom_density().)
+
+```{r}
+
+diamonds %>%
+  ggplot(aes(depth)) +
+  geom_freqpoly(binwidth = 0.1, size = 5) +
+  geom_density(color = "darkred", fill = "darkred", size = 3) +
+  labs(subtitle = "Original overlay")
+  
+diamonds %>%
+  ggplot(aes(depth)) +
+  geom_freqpoly(binwidth = 0.1, size = 5,
+                aes(y = ..density..)) +
+  geom_density(color = "darkred", fill = "darkred", alpha = 0.5) +
+  labs(subtitle = "Geom freqpoly with aes(y = ..density..)")
+
+# https://stackoverflow.com/questions/37404002/geom-density-to-match-geom-histogram-binwitdh
+diamonds %>%
+  ggplot(aes(depth)) +
+  geom_freqpoly(binwidth = 0.1, size = 5) +
+  geom_density(aes(y = 0.1 * ..count..),
+               color = "darkred", fill = "darkred", alpha = 0.5) +
+  labs(subtitle = "Geom denisty with aes(y =binwidth * ..count..)")
+  
+
+```
+
