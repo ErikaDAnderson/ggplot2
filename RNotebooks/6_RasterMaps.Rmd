@@ -23,8 +23,8 @@ An example from the Raster Map section.
 
 # BOM images are retained for 24 hours, so this will return an
 # empty vector if you run this code without editing the time stamp
-# there are 1061 files > 8 mb to be prepared to wait and have enough space
-files <- bomrang::get_available_imagery() %>% stringr::str_subset("20210102300")
+# there are 1000s of files > 8 mb to be prepared to wait and have enough space
+files <- bomrang::get_available_imagery() %>% stringr::str_subset("202101072100")
 
 # need to create folder to hold files
 dir.create("raster")
@@ -37,6 +37,16 @@ purrr::walk2(
   .f = ~ download.file(url = .x, destfile = .y)
 )
 
+# try smaller amount
+files <- c("IDE00427.202101071650.tif", "IDE00427.202101071700.tif")
+
+purrr::walk2(
+  .x = paste0("ftp://ftp.bom.gov.au/anon/gen/gms/", files),
+  .y = file.path("raster", files),
+  .f = ~ download.file(url = .x, destfile = .y)
+)
+
+
 #After caching the files locally (which is generally a good idea) we can inspect the list of files we have downloaded:
 dir("raster")
 
@@ -44,9 +54,11 @@ dir("raster")
 
 ```{r}
 
+##### not able to get the tiff to work after this point
+
 # need to modify these to what is in the folder
-img_vis  <- file.path("raster", "IDE00420.202101061830.tif")
-img_inf <- file.path("raster", "IDE00420.202101061840.tif")
+img_vis  <- file.path("raster", "IDE00427.202101071650.tif")
+img_inf <- file.path("raster", "IDE00427.202101071700.tif")
 
 sat_vis <- read_stars(img_vis, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
 sat_inf <- read_stars(img_inf, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
