@@ -37,13 +37,13 @@ diamonds %>%
 # less bins
 diamonds %>%
   ggplot(aes(carat)) +
-  geom_histogram(bins = 10)  +
+  geom_histogram(bins = 10)  + # 
   labs(subtitle = "10 bins")
 
 # even more bins
 diamonds %>%
   ggplot(aes(carat)) +
-  geom_histogram(bins = 500)  +
+  geom_histogram(bins = 500)  + # or binwidth 0.01?
   labs(subtitle = "Best with 500 bins")
 
 ```
@@ -65,6 +65,10 @@ diamonds %>%
   geom_histogram(bins = 1000) +
   #xlim(400, 5000) +
   labs(subtitle = "More higher quality cuts than fair")
+
+# Christine found bimodal distribution
+ggplot(diamonds, aes(price)) +
+  geom_histogram(binwidth = 500)
 ```
 
 
@@ -78,7 +82,7 @@ diamonds %>%
 
 diamonds %>%
   ggplot(aes(price, fill = clarity, color = clarity)) +
-  geom_histogram(bins = 1000, position = "fill", na.rm = TRUE)
+  geom_histogram(bins = 500, position = "fill", na.rm = TRUE)
 
 diamonds %>%
   ggplot(aes(price, clarity)) +
@@ -87,6 +91,12 @@ diamonds %>%
 diamonds %>%
   ggplot(aes(price, clarity)) +
   geom_violin()
+
+# JN used faceted version
+ggplot(diamonds, aes(price)) + 
+  geom_histogram(binwidth = 100) + 
+  facet_wrap(~clarity)
+
 
 ```
 
@@ -116,6 +126,15 @@ diamonds %>%
                color = "darkred", fill = "darkred", alpha = 0.5) +
   labs(subtitle = "Geom denisty with aes(y =binwidth * ..count..)")
   
+
+# JN changed the stat instead
+ggplot(diamonds, aes(depth)) +
+geom_density(stat = "density", na.rm = TRUE, size = 2) +
+geom_freqpoly(stat = "density", color = "purple", size = 1.2, na.rm = TRUE)
+
+ggplot(diamonds, aes(depth)) +
+geom_density(stat = "bin", na.rm = TRUE, size = 2) +
+geom_freqpoly(stat = "bin", color = "light blue", size = 1.2, na.rm = TRUE)
 
 ```
 
