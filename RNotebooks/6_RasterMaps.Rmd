@@ -1,0 +1,95 @@
+---
+title: "ggplot2: 6.5 Raster Maps "
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+
+library(tidyverse)
+library(bomrang) # for raster data
+library(stars) # import the data as stars objects
+library(abind) # dependency of stars
+
+# set global theme for graphs
+theme_set(theme_bw())
+
+```
+
+An example from the Raster Map section.
+
+```{r}
+
+# BOM images are retained for 24 hours, so this will return an
+# empty vector if you run this code without editing the time stamp
+# there are 1061 files > 8 mb to be prepared to wait and have enough space
+files <- bomrang::get_available_imagery() %>% stringr::str_subset("20210102300")
+
+# need to create folder to hold files
+dir.create("raster")
+
+# use curl_download() to obtain a single file, and purrr to 
+# vectorise this operation
+purrr::walk2(
+  .x = paste0("ftp://ftp.bom.gov.au/anon/gen/gms/", files),
+  .y = file.path("raster", files),
+  .f = ~ download.file(url = .x, destfile = .y)
+)
+
+#After caching the files locally (which is generally a good idea) we can inspect the list of files we have downloaded:
+dir("raster")
+
+```
+
+```{r}
+
+# need to modify these to what is in the folder
+img_vis  <- file.path("raster", "IDE00420.202101061830.tif")
+img_inf <- file.path("raster", "IDE00420.202101061840.tif")
+
+sat_vis <- read_stars(img_vis, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
+sat_inf <- read_stars(img_inf, RasterIO = list(nBufXSize = 600, nBufYSize = 600))
+```
+
+In the code above, the first argument specifies the path to the raster file, and the RasterIO argument is used to pass a list of low-level parameters to GDAL. In this case, I have used nBufXSize and nBufYSize to ensure that R reads the data at low resolution (as a 600x600 pixel image). To see what information R has imported, we can inspect the sat_vis object:
+
+```{r}
+sat_vis
+```
+
+To plot the sat_vis data in ggplot2, we can use the geom_stars() function provided by the stars package. A minimal plot might look like this:
+```{r}
+ggplot() + 
+  geom_stars(data = sat_vis) + 
+  coord_equal()
+
+# To see what the image file “really” looks like we can separate the bands using facet_wrap():
+
+ggplot() + 
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  facet_wrap(vars(band)) + 
+  coord_equal() + 
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+```{r}
+oz_states <- st_transform(oz_states, crs = st_crs(sat_vis))
+
+cities <- oz_capitals %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE)
+
+cities <- st_transform(cities, st_crs(sat_vis))
+
+ggplot() + 
+  geom_stars(data = sat_vis, show.legend = FALSE) +
+  geom_sf(data = oz_states, fill = NA, color = "white") + 
+  geom_sf(data = cities, color = "red") + 
+  coord_sf() + 
+  theme_void() + 
+  scale_fill_gradient(low = "black", high = "white")
+
+geom_sf_text(data = cities, mapping = aes(label = city)) 
+
+```
+
