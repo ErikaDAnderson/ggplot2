@@ -20,23 +20,26 @@ library(tidyverse)
 fwd <- subset(mpg, drv == "f")
 rwd <- subset(mpg, drv == "r")
 
+
 ggplot(fwd, aes(displ, hwy, colour = class)) + geom_point()
 ggplot(rwd, aes(displ, hwy, colour = class)) + geom_point()
 
-# modify to graphs to match axes and legend
-base <- ggplot(mpg, aes(displ, hwy, colour = class))
+# make them match
+fwd <- mpg %>%
+  mutate(displ = if_else(drv == "f", displ, NA_real_))
 
-base +
-  geom_point(data = filter(mpg, drv == "f")) +
+rwd <- mpg %>%
+  mutate(displ = if_else(drv == "r", displ, NA_real_))
+
+ggplot(fwd, aes(displ, hwy, colour = class)) + 
+  geom_point() +
   scale_x_continuous(limits = c(1,7)) +
   scale_y_continuous(limits = c(0,45))
 
-base +
-  geom_point(data = filter(mpg, drv == "r")) +
+ggplot(rwd, aes(displ, hwy, colour = class)) + 
+  geom_point() +
   scale_x_continuous(limits = c(1,7)) +
-  scale_y_continuous(limits = c(0,45)) 
-
-#### not finished as we need to make legends match
+  scale_y_continuous(limits = c(0,45))
 
 
 ```
@@ -63,7 +66,7 @@ Nothing changes since these are the default scales for all plots. All points are
 
 ```{r}
 
-ggplot(fwd, aes(displ, hwy, colour = class)) + 
+ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point() +
   scale_x_continuous(limits = c(NA, NA))
 
@@ -93,22 +96,24 @@ Adjust the y axis label so that the parentheses are the right size.
 
 ggplot(mpg, aes(displ, hwy)) +
   geom_point() +
-  scale_y_continuous(name = expression(Highway *(frac(miles,gallon))),
+  scale_y_continuous(name = expression(Highway * (frac(miles,gallon))),
                      limits = c(12, 44)) +
-  scale_x_continuous(name = "Displacement")
+  scale_x_continuous(name = "Displacement", breaks = c(2:7), 
+                     labels = c("2.0L", "3.0L", "4.0L", "5.0L", "6.0L", "7.0L")
+                     )
 
-## not complete, not sure what was done with x-axis breaks and labels?
+## not complete, not sure how to squish x axis to a shorter size
 
 ```
 
 
 2. List the three different types of object you can supply to the breaks argument. How do breaks and labels differ?
 
-The objects that you can supply to the breaks argument is a vector for manual, a custom function, or a function from the scales package. Labels must be a character vector, whereas the breaks is the same type as the axes.
+The objects that you can supply to the breaks argument is a vector for manual, a custom function, or a function from the scales package. Labels must be a character vector to display text, whereas the breaks is the same type as the axes and it is where the tick marks go.
 
 3. What label function allows you to create mathematical expressions? What label function converts 1 to 1st, 2 to 2nd, and so on?
 
-label_math or label_parse can use label with math expressions.
+Within scale_xy_continuous use label_math or label_parse within labels = 
 
 Or you can use expression() from ?plotmath to make math expression in the labels vector.
 
@@ -128,3 +133,4 @@ p + scale_x_continuous(breaks = scales::breaks_extended(n = 2),
 
 
 scales::label_ordinal() gives the rank as labels.
+
