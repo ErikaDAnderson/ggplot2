@@ -1,0 +1,51 @@
+---
+title: "ggplot2: 11 Colour Scales and Legends"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+library(tidyverse)
+
+```
+
+## 11.3.4 Exercise
+
+Recreate the following plot: (see website)
+
+```{r}
+
+  ggplot(mpg, aes(displ, hwy, color = drv)) +
+  geom_point(size = 3) +
+  scale_color_discrete(labels = c("4wd", "fwd", "rwd"))
+
+
+```
+
+
+## 11.7.5 Exercises
+
+1. How do you make legends appear to the left of the plot?
+
+2. What’s gone wrong with this plot? How could you fix it?
+
+```{r}
+
+# given
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point(aes(colour = drv, shape = drv)) + 
+  scale_colour_discrete("Drive train")
+
+```
+
+
+3. Can you recreate the code for this plot?
+
+```{r}
+
+# given
+#> `geom_smooth()` using formula 'y ~ x'
+
+```
+
