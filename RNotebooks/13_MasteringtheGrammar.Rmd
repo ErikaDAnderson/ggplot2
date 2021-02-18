@@ -1,0 +1,31 @@
+---
+title: "ggplot2: 13 Mastering the Grammar"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+library(tidyverse)
+
+```
+
+## 13.5 Exercises
+
+1. “Napoleon’s march” by Charles John Minard: http://www.datavis.ca/gallery/re-minard.php
+
+There is a graph showing the year on the x-axis, the number of graphics produced on the y axis. There is a geom_smooth smoothing the trend over time. There are also blue ticks at the top and bottom inside the graph. The top tick marks show the graphics produced on other topics, whereas the tick marks at the bottom represent graphics produced based on the distribution of goods. There are also three annotations naming when Minard was Inspector General, Retires and Dies.
+
+2. “Where the Heat and the Thunder Hit Their Shots”, by Jeremy White, Joe Ward, and Matthew Ericson at The New York Times. http://nyti.ms/1duzTvY
+
+
+
+3. “London Cycle Hire Journeys”, by James Cheshire. http://bit.ly/1S2cyRy
+
+4. The Pew Research Center’s favorite data visualizations of 2014: http://pewrsr.ch/1KZSSN6
+
+4. “The Tony’s Have Never Been so Dominated by Women”, by Joanna Kao at FiveThirtyEight: http://53eig.ht/1cJRCyG.
+
+5. “In Climbing Income Ladder, Location Matters” by the Mike Bostock, Shan Carter, Amanda Cox, Matthew Ericson, Josh Keller, Alicia Parlapiano, Kevin Quealy and Josh Williams at the New York Times: http://nyti.ms/1S2dJQT
+
+6. “Dissecting a Trailer: The Parts of the Film That Make the Cut”, by Shan Carter, Amanda Cox, and Mike Bostock at the New York Times: http://nyti.ms/1KTJQOE
