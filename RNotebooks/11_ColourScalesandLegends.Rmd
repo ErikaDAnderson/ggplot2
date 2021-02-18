@@ -28,7 +28,30 @@ Recreate the following plot: (see website)
 
 1. How do you make legends appear to the left of the plot?
 
+```{r}
+
+# given
+toy <- data.frame(
+  const = 1, 
+  up = 1:4,
+  txt = letters[1:4], 
+  big = (1:4)*1000,
+  log = c(2, 5, 10, 2000)
+)
+
+base <- ggplot(toy, aes(up, up)) + 
+  geom_point(aes(colour = txt), size = 3) + 
+  xlab(NULL) + 
+  ylab(NULL)
+
+base + theme(legend.position = "left")
+
+```
+
+
 2. What’s gone wrong with this plot? How could you fix it?
+
+There are two legends. I would combine them into one for shape and color
 
 ```{r}
 
@@ -37,15 +60,42 @@ ggplot(mpg, aes(displ, hwy)) +
   geom_point(aes(colour = drv, shape = drv)) + 
   scale_colour_discrete("Drive train")
 
+# fixed
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point(aes(colour = drv, shape = drv)) + 
+  labs(shape = "Drive train", colour = "Drive train")
+
+# # alternative
+# ggplot(mpg, aes(displ, hwy)) + 
+#   geom_point(aes(colour = drv, shape = drv)) + 
+#   scale_colour_discrete("Drive train") +
+#   scale_shape_discrete("Drive train")
+# # not as good since returns NAs
+
+
 ```
 
 
 3. Can you recreate the code for this plot?
 
+Still need to drop outer levels using drop limits and override.aes??
+
 ```{r}
 
-# given
-#> `geom_smooth()` using formula 'y ~ x'
+ggplot(mpg, aes(displ, hwy, colour = class)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y~x) +
+
+  # to put legend in single row
+  guides(colour = guide_legend(nrow = 1,
+                               override.aes = list(linetype = c(0,1,1,1,1,1,0)))) +
+  # to put legend at bottom
+  theme(legend.position = "bottom",
+        # to remove legend title
+        legend.title = element_blank())
+
+# likely need to drop limits instead to remove 2seater and SUV from legend
+# how can we do this??
 
 ```
 
