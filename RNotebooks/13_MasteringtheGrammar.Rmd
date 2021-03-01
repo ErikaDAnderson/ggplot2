@@ -18,14 +18,24 @@ There is a graph showing the year on the x-axis, the number of graphics produced
 
 2. “Where the Heat and the Thunder Hit Their Shots”, by Jeremy White, Joe Ward, and Matthew Ericson at The New York Times. http://nyti.ms/1duzTvY
 
-
+There are two graphs faceted by sports teams (Heat and Thunder), plus on the tabs the graphs are repeated with three regions of shots (3-pointers, mid range and close range). The player position is where shots are taken from on the basketball key. The size of those positions indicate the number of attempts, whereas the color indicates the points earned from that position. 
 
 3. “London Cycle Hire Journeys”, by James Cheshire. http://bit.ly/1S2cyRy
 
+Privacy error
+
 4. The Pew Research Center’s favorite data visualizations of 2014: http://pewrsr.ch/1KZSSN6
+
+There are three years displayed with republicans on the top level and democrats below, making a 3 x 2 grid. The x -axis indicates a scale of political values. The area is filled in for the responses by that party. The vertical line indicates the median view of the opposite party superimposed on the area graph. The point of the graphs is that the political party view overlapped substantially in 1994 but diverged by 2014.
 
 4. “The Tony’s Have Never Been so Dominated by Women”, by Joanna Kao at FiveThirtyEight: http://53eig.ht/1cJRCyG.
 
+Year is on the x-axis on top. The y-axis has tony award categories, grey boxes and red boxes show when a tony award was presented. The red box is when at least one winner was female, grey represents no female award winners.
+
 5. “In Climbing Income Ladder, Location Matters” by the Mike Bostock, Shan Carter, Amanda Cox, Matthew Ericson, Josh Keller, Alicia Parlapiano, Kevin Quealy and Josh Williams at the New York Times: http://nyti.ms/1S2dJQT
 
+No graph within article
+
 6. “Dissecting a Trailer: The Parts of the Film That Make the Cut”, by Shan Carter, Amanda Cox, and Mike Bostock at the New York Times: http://nyti.ms/1KTJQOE
+
+There are five graphs, one for each movie discussed. The x-axis is the time line of the trailer for the movie. The y-axis is four categories: the beginning, middle, end or not in the film. There are additional notes on the bottom x-axis for notes about certain scenes within the trailer. The points on the graph show where the scenes originate from the movie. The colors of those points show which category that scene fits (beginning, middle, end, or not).
