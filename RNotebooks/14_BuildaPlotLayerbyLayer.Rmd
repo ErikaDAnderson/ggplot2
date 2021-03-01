@@ -1,0 +1,99 @@
+---
+title: "ggplot2: 14 Build a plot layer by layer"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+library(tidyverse)
+
+```
+
+## 14.3.1 Data Exercises
+
+1. The first two arguments to ggplot are data and mapping. The first two arguments to all layer functions are mapping and data. Why does the order of the arguments differ? (Hint: think about what you set most commonly.)
+
+2. The following code uses dplyr to generate some summary statistics about each class of car. Use the data to recreate this plot:
+
+```{r}
+
+library(dplyr)
+class <- mpg %>% 
+  group_by(class) %>% 
+  summarise(n = n(), hwy = mean(hwy))
+
+```
+
+
+## 14.4.3 Aesthetics Exercises
+
+1. Simplify the following plot specifications:
+
+```{r}
+
+ggplot(mpg) + 
+  geom_point(aes(mpg$displ, mpg$hwy))
+
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
+ geom_smooth(data = mpg, mapping = aes(cty, hwy))
+
+ggplot(diamonds, aes(carat, price)) + 
+  geom_point(aes(log(brainwt), log(bodywt)), data = msleep)
+
+```
+
+
+2. What does the following code do? Does it work? Does it make sense? Why/why not?
+
+```{r}
+
+ggplot(mpg) +
+  geom_point(aes(class, cty)) + 
+  geom_boxplot(aes(trans, hwy))
+
+```
+
+
+3. What happens if you try to use a continuous variable on the x axis in one layer, and a categorical variable in another layer? What happens if you do it in the opposite order?
+
+## 14.5.1 Geoms Exercises
+
+1. Download and print out the ggplot2 cheatsheet from http://www.rstudio.com/resources/cheatsheets/ so you have a handy visual reference for all the geoms.
+
+2. Look at the documentation for the graphical primitive geoms. Which aesthetics do they use? How can you summarise them in a compact form?
+
+3. What’s the best way to master an unfamiliar geom? List three resources to help you get started.
+
+4. For each of the plots below, identify the geom used to draw it.
+
+##14.6.2 Stats Exercises
+
+1. The code below creates a similar dataset to stat_smooth(). Use the appropriate geoms to mimic the default geom_smooth() display.
+
+```{r}
+mod <- loess(hwy ~ displ, data = mpg)
+smoothed <- data.frame(displ = seq(1.6, 7, length = 50))
+pred <- predict(mod, newdata = smoothed, se = TRUE) 
+smoothed$hwy <- pred$fit
+smoothed$hwy_lwr <- pred$fit - 1.96 * pred$se.fit
+smoothed$hwy_upr <- pred$fit + 1.96 * pred$se.fit
+```
+
+2. What stats were used to create the following plots?
+
+
+3. Read the help for stat_sum() then use geom_count() to create a plot that shows the proportion of cars that have each combination of drv and trans.
+
+## 14.7.1 Position Adjustments Exercises 
+
+1. When might you use position_nudge()? Read the documentation.
+
+2. Many position adjustments can only be used with a few geoms. For example, you can’t stack boxplots or errors bars. Why not? What properties must a geom possess in order to be stackable? What properties must it possess to be dodgeable?
+
+3. Why might you use geom_jitter() instead of geom_count()? What are the advantages and disadvantages of each technique?
+
+4. When might you use a stacked area plot? What are the advantages and disadvantages compared to a line plot?
+
+
