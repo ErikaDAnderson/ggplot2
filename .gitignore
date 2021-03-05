@@ -30,7 +30,7 @@
 *.log
 *.lot
 *.pdf
-*.png
+.png
 *.ps
 *.toc
 # *.txt
