@@ -5,7 +5,7 @@ output: html_notebook
 
 This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
 
-```{r setup, warning=FALSE,message=FALSE}
+```{r setup, warning=FALSE, message=FALSE, echo = FALSE}
 library(tidyverse)
 
 ```
@@ -16,25 +16,28 @@ library(tidyverse)
 
 There is a graph showing the year on the x-axis, the number of graphics produced on the y axis. There is a geom_smooth smoothing the trend over time. There are also blue ticks at the top and bottom inside the graph. The top tick marks show the graphics produced on other topics, whereas the tick marks at the bottom represent graphics produced based on the distribution of goods. There are also three annotations naming when Minard was Inspector General, Retires and Dies.
 
+See CH's alternative answer
+
 2. “Where the Heat and the Thunder Hit Their Shots”, by Jeremy White, Joe Ward, and Matthew Ericson at The New York Times. http://nyti.ms/1duzTvY
 
 There are two graphs faceted by sports teams (Heat and Thunder), plus on the tabs the graphs are repeated with three regions of shots (3-pointers, mid range and close range). The player position is where shots are taken from on the basketball key. The size of those positions indicate the number of attempts, whereas the color indicates the points earned from that position. 
 
 3. “London Cycle Hire Journeys”, by James Cheshire. http://bit.ly/1S2cyRy
 
-Privacy error
+Privacy error so see attached pic
+![](13.5.3 Cycle Hire Map.PNG)
 
 4. The Pew Research Center’s favorite data visualizations of 2014: http://pewrsr.ch/1KZSSN6
 
-There are three years displayed with republicans on the top level and democrats below, making a 3 x 2 grid. The x -axis indicates a scale of political values. The area is filled in for the responses by that party. The vertical line indicates the median view of the opposite party superimposed on the area graph. The point of the graphs is that the political party view overlapped substantially in 1994 but diverged by 2014.
+There are three years displayed with republicans on the top level and democrats below, making a 3 x 2 grid. The x -axis indicates a scale of political values. The area is filled in for the responses by that party. The vertical line indicates the median view of the opposite party superimposed on the area graph. The point of the graphs is that the political party view overlapped substantially in 1994 but diverged by 2014. Perhaps with geom_area or geom_density over two layers, the second layer using filtered data from the median of the other political party.
 
 4. “The Tony’s Have Never Been so Dominated by Women”, by Joanna Kao at FiveThirtyEight: http://53eig.ht/1cJRCyG.
 
-Year is on the x-axis on top. The y-axis has tony award categories, grey boxes and red boxes show when a tony award was presented. The red box is when at least one winner was female, grey represents no female award winners.
+Year is on the x-axis on top. The y-axis has tony award categories, grey boxes and red boxes show when a tony award was presented. The red box is when at least one winner was female, grey represents no female award winners. Note from JN about bias because there are 40 tonies and only 8 listed who had a woman win so still dominated by men.
 
 5. “In Climbing Income Ladder, Location Matters” by the Mike Bostock, Shan Carter, Amanda Cox, Matthew Ericson, Josh Keller, Alicia Parlapiano, Kevin Quealy and Josh Williams at the New York Times: http://nyti.ms/1S2dJQT
 
-No graph within article
+No graph within article so use this link: https://web.archive.org/web/20160611031223/https://spatialanalysis.co.uk/wp-content/uploads/2012/02/bike_ggplot.png
 
 6. “Dissecting a Trailer: The Parts of the Film That Make the Cut”, by Shan Carter, Amanda Cox, and Mike Bostock at the New York Times: http://nyti.ms/1KTJQOE
 
