@@ -14,14 +14,30 @@ library(tidyverse)
 
 1. The first two arguments to ggplot are data and mapping. The first two arguments to all layer functions are mapping and data. Why does the order of the arguments differ? (Hint: think about what you set most commonly.)
 
+They are in order of most commonly used. In ggplot2, the data comes first and in geoms, usually the data is default to the ggplot call so the mappings are used most often.
+
+
 2. The following code uses dplyr to generate some summary statistics about each class of car. Use the data to recreate this plot:
 
 ```{r}
 
-library(dplyr)
 class <- mpg %>% 
   group_by(class) %>% 
-  summarise(n = n(), hwy = mean(hwy))
+  summarise(n = n(), hwy = mean(hwy),
+            .groups = "drop")
+
+# create annotation vector
+classMeans <- str_c("n=", class$n, sep = "") 
+
+ggplot() +
+  geom_jitter(aes(class, hwy), data = mpg) +
+  geom_point(aes(class, hwy), data = class, color = "red", size = 7) +
+  geom_text(aes(class, min(mpg$hwy), label = classMeans), data = class)
+
+# alternative version from later in chapter
+ggplot(mpg, aes(class, hwy)) +
+  geom_jitter() +
+  geom_point(stat = "summary", fun = "mean", colour = "red", size = 7)
 
 ```
 
@@ -32,15 +48,33 @@ class <- mpg %>%
 
 ```{r}
 
+# given
 ggplot(mpg) + 
   geom_point(aes(mpg$displ, mpg$hwy))
 
+# fixed
+ggplot(mpg) + 
+  geom_point(aes(displ, hwy))
+
+# given
 ggplot() + 
  geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
  geom_smooth(data = mpg, mapping = aes(cty, hwy))
 
+# simplified
+ggplot(mpg) + 
+ geom_point(aes(cty, hwy)) +
+ geom_smooth(aes(cty, hwy))
+
+# given
 ggplot(diamonds, aes(carat, price)) + 
   geom_point(aes(log(brainwt), log(bodywt)), data = msleep)
+
+# simlipfied
+ggplot() + 
+  geom_point(aes(log(brainwt), log(bodywt)), msleep)
+
+
 
 ```
 
@@ -55,8 +89,34 @@ ggplot(mpg) +
 
 ```
 
+This code runs so it works; however, it does not make sense because the x axis has two different values depending on the geom. Geom_boxplot uses calls, whereas geom_point uses transmission.
+
 
 3. What happens if you try to use a continuous variable on the x axis in one layer, and a categorical variable in another layer? What happens if you do it in the opposite order?
+
+The is an error generates if you try to apply different types of data to the same x-axis.
+
+```{r}
+
+# categorical x axis with continuous x axis on second layer
+# gives error
+ggplot(mpg) +
+  geom_point(aes(class, hwy)) +
+  geom_point(aes(hwy, class), color = "red")
+
+```
+
+
+```{r}
+
+# continuous x axis with categorical x axis on second layer
+# gives error
+ggplot(mpg) +
+  geom_point(aes(hwy, class), color = "red") +
+  geom_point(aes(class, hwy))
+
+```
+
 
 ## 14.5.1 Geoms Exercises
 
@@ -64,9 +124,48 @@ ggplot(mpg) +
 
 2. Look at the documentation for the graphical primitive geoms. Which aesthetics do they use? How can you summarise them in a compact form?
 
+Graphical primitives use x and y as the minimum required aesthetics. They have additional optional arguments.
+geom_blank()
+geom_curve()
+geom_path()
+geom_polygon()
+geom_rect()
+geom_ribbon()
+
+
 3. What’s the best way to master an unfamiliar geom? List three resources to help you get started.
 
+ggplot cheatsheet
+google
+?functionName for help file
+
 4. For each of the plots below, identify the geom used to draw it.
+
+geom_violin()
+geom_point() with size as aes and alpha = 0.5?
+geom_hex()
+geom_jitter()
+geom_area()
+geom_path()
+
+5. For each of the following problems, suggest a useful geom:
+
+-Display how a variable has changed over time.
+geom_line using time on x axis
+
+-Show the detailed distribution of a single variable.
+geom_histogram() or geom_violin
+
+-Focus attention on the overall trend in a large dataset.
+geom_smooth() over geom_point
+
+-Draw a map.
+geom_map() or ggmap()
+
+-Label outlying points.
+geom_point() on outlier dataset with labels or geom_label()
+
+
 
 ##14.6.2 Stats Exercises
 
