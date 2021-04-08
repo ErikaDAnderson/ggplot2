@@ -39,6 +39,25 @@ ggplot(mpg, aes(class, hwy)) +
   geom_jitter() +
   geom_point(stat = "summary", fun = "mean", colour = "red", size = 7)
 
+# AM solution with label as new column
+class <- mpg %>%
+  group_by(class) %>%
+  summarise(n = n(), hwy = mean(hwy),
+            .groups = "drop") %>%
+  mutate(nlabel = paste("n = ",n))
+
+ggplot(mpg, aes(class, hwy)) +
+  geom_point(position = "jitter") +
+  geom_point(data = class,colour = "red",size = 5) +
+  geom_text(data = class,aes(label = nlabel, y = 10))
+
+#YX solution
+t<-paste("n=",class$n)
+ggplot(mpg,aes(x=class,y=hwy))+
+geom_jitter(width = 0.1, size=2)+ # use width to constrain the points
+geom_point(aes(x=class,y=hwy),data = class,colour="red",size=5)+
+geom_text(aes(label=t,y=10),data=class)
+
 ```
 
 
@@ -62,9 +81,9 @@ ggplot() +
  geom_smooth(data = mpg, mapping = aes(cty, hwy))
 
 # simplified
-ggplot(mpg) + 
- geom_point(aes(cty, hwy)) +
- geom_smooth(aes(cty, hwy))
+ggplot(mpg, aes(cty, hwy)) + 
+ geom_point() +
+ geom_smooth()
 
 # given
 ggplot(diamonds, aes(carat, price)) + 
@@ -89,7 +108,7 @@ ggplot(mpg) +
 
 ```
 
-This code runs so it works; however, it does not make sense because the x axis has two different values depending on the geom. Geom_boxplot uses calls, whereas geom_point uses transmission.
+This code runs so it works; however, it does not make sense because the x axis has two different values depending on the geom. Geom_point uses class, whereas geom_point uses transmission.
 
 
 3. What happens if you try to use a continuous variable on the x axis in one layer, and a categorical variable in another layer? What happens if you do it in the opposite order?
@@ -132,12 +151,16 @@ geom_polygon()
 geom_rect()
 geom_ribbon()
 
+Compact form: aes(x,y)
 
 3. What’s the best way to master an unfamiliar geom? List three resources to help you get started.
 
 ggplot cheatsheet
 google
 ?functionName for help file
+RStudio help
+stack overflow
+ask/email a friend
 
 4. For each of the plots below, identify the geom used to draw it.
 
@@ -148,22 +171,54 @@ geom_jitter()
 geom_area()
 geom_path()
 
+```{r}
+
+# from YX solution
+ggplot(data=mpg,aes(x=drv,y=displ))+
+geom_violin(lwd=1)
+
+ggplot(data=mpg,aes(x=hwy,y=cty))+
+geom_jitter(alpha=0.2,size=mpg$displ,height = 0.1) #??
+
+ggplot(data=mpg,aes(x=hwy,y=cty))+
+geom_hex(bins=10,show.legend = F)
+
+ggplot(data=mpg,aes(x=cyl,y=drv))+
+geom_jitter(width = 0.1,height=0.2, size=3)
+
+ggplot(data=economics,aes(x=date,y=psavert))+
+geom_area()
+
+ggplot(data=economics,aes(x=uempmed,y=psavert))+
+geom_path(lwd=1)
+
+```
+
+
 5. For each of the following problems, suggest a useful geom:
 
 -Display how a variable has changed over time.
 geom_line using time on x axis
+geom_step
+geom_area
 
 -Show the detailed distribution of a single variable.
-geom_histogram() or geom_violin
-
+geom_histogram
+geom_violin
+(geom_point with color aes() ->assuming you have x y coordinates)
+)
 -Focus attention on the overall trend in a large dataset.
 geom_smooth() over geom_point
+geom_boxplot or geom_violin
 
 -Draw a map.
 geom_map() or ggmap()
+library(bcmaps) has high and low resolution 
 
 -Label outlying points.
 geom_point() on outlier dataset with labels or geom_label()
+geom_text mapped to outliers
+geom_points for outliers in bigger halo (biiger size than df)
 
 
 
@@ -172,12 +227,31 @@ geom_point() on outlier dataset with labels or geom_label()
 1. The code below creates a similar dataset to stat_smooth(). Use the appropriate geoms to mimic the default geom_smooth() display.
 
 ```{r}
+
+# given
 mod <- loess(hwy ~ displ, data = mpg)
 smoothed <- data.frame(displ = seq(1.6, 7, length = 50))
 pred <- predict(mod, newdata = smoothed, se = TRUE) 
 smoothed$hwy <- pred$fit
 smoothed$hwy_lwr <- pred$fit - 1.96 * pred$se.fit
 smoothed$hwy_upr <- pred$fit + 1.96 * pred$se.fit
+
+# make geom_smooth
+plot1 <- ggplot(mpg, aes(displ, hwy)) +
+  geom_smooth(method = "loess", formula = "y~x")
+plot1
+
+# find colors in ggplot
+# this is really cool!!!
+ggplot_build(plot1)$data
+
+# make equivalent to geom_smooth
+ggplot(smoothed, aes(displ, hwy)) +
+  geom_ribbon(aes(ymin = hwy_lwr, ymax = hwy_upr), alpha = 0.2) +
+    geom_line(color = "#3366FF", size = 1)
+
+
+
 ```
 
 2. What stats were used to create the following plots?
