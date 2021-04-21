@@ -256,17 +256,130 @@ ggplot(smoothed, aes(displ, hwy)) +
 
 2. What stats were used to create the following plots?
 
+```{r}
+
+# cumulative proportion displayed as line x = displ
+# compute a empirical cumulative distribution plot using stat_ecdf
+ggplot(mpg, aes(displ)) +
+  stat_ecdf() 
+
+# x = theoretical, y = sample of displ
+# googled to find which stat
+ggplot(mpg, aes(sample = displ)) +
+  stat_qq()
+
+# 2 lines of data and normal distributions (by color) of x on displ and y for density
+# need mean and standard deviation of original data
+meandispl <- mean(mpg$displ)
+sddipl <- sd(mpg$displ)
+
+ggplot(mpg) +
+  geom_density(aes(displ, after_stat(density)), color = "tomato") +
+  stat_function(aes(displ), fun = dnorm, args = c(mean = meandispl, sd = sddipl), col = "blue")
+# legend missing still
+# must be simpler way to add both - anyone else?
+
+```
+
 
 3. Read the help for stat_sum() then use geom_count() to create a plot that shows the proportion of cars that have each combination of drv and trans.
+
+```{r}
+
+ggplot(mpg, aes(drv, trans)) +
+  geom_count(aes(size = after_stat(prop), group = drv))
+
+```
+
 
 ## 14.7.1 Position Adjustments Exercises 
 
 1. When might you use position_nudge()? Read the documentation.
 
+"generally useful for adjusting the position of items on discrete scales by a small amount. Nudging is built in to geom_text() because it's so useful for moving labels a small distance from what they're labelling."
+
 2. Many position adjustments can only be used with a few geoms. For example, you can’t stack boxplots or errors bars. Why not? What properties must a geom possess in order to be stackable? What properties must it possess to be dodgeable?
+
+-boxplot and error bars cannot be stacked as you cannot see them when they would overlap
+-geoms that are stackable must be able to be placed together such as bars, times series with geom_area, geom_line or geom_point
+-dodgable examples must be able to be offset like bars or boxplots (perhaps categorical data?)
+
+```{r}
+
+# from https://ggplot2.tidyverse.org/reference/position_stack.html
+# Stacking is also useful for time series
+series <- data.frame(
+  time = c(rep(1, 4),rep(2, 4), rep(3, 4), rep(4, 4)),
+  type = rep(c('a', 'b', 'c', 'd'), 4),
+  value = rpois(16, 10))
+  
+# When stacking across multiple layers it's a good idea to always set
+# the `group` aesthetic in the ggplot() call. This ensures that all layers
+# are stacked in the same way.
+ggplot(series, aes(time, value, group = type)) +
+  geom_line(aes(colour = type), position = "stack") +
+  geom_point(aes(colour = type), position = "stack")
+
+ggplot(series, aes(time, value)) +
+  geom_area(aes(fill = type))
+
+# https://ggplot2.tidyverse.org/reference/position_dodge.html
+# Box plots use position_dodge2 by default, and bars can use it too
+ggplot(data = iris, aes(Species, Sepal.Length)) +
+  geom_boxplot(aes(colour = Sepal.Width < 3.2))
+
+```
+
 
 3. Why might you use geom_jitter() instead of geom_count()? What are the advantages and disadvantages of each technique?
 
+- geom_jitter moves points randomly to avoid minor overplotting and emphasizes bigger picture ideas
+- geom_jitter works better with discrete data
+- geom_count should be used if the exact location is important 
+- in the example the size indicates importance in geom_count
+
+```{r}
+
+# given
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_jitter(width = 0.05, height = 0.5)
+
+# geom_count
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_count()
+
+```
+
+
 4. When might you use a stacked area plot? What are the advantages and disadvantages compared to a line plot?
+
+"An area plot...can be used to show how composition of the whole varies over the range of x. Choosing the order in which different components is stacked is very important, as it becomes increasing hard to see the individual pattern as you move up the stack."
+
+- a line plot would be better if the lines are not parallel and cross
+- area plot has presence with the right data
+- order of groups is important to not obscure data
+- geom_area shows the evolution of one or several numeric variables
+
+```{r}
+
+# from https://ggplot2.tidyverse.org/reference/position_stack.html
+# Stacking is also useful for time series
+series <- data.frame(
+  time = c(rep(1, 4),rep(2, 4), rep(3, 4), rep(4, 4)),
+  type = rep(c('a', 'b', 'c', 'd'), 4),
+  value = rpois(16, 10))
+  
+# When stacking across multiple layers it's a good idea to always set
+# the `group` aesthetic in the ggplot() call. This ensures that all layers
+# are stacked in the same way.
+ggplot(series, aes(time, value, group = type)) +
+  geom_line(aes(colour = type), position = "stack") +
+  geom_point(aes(colour = type), position = "stack")
+
+ggplot(series, aes(time, value)) +
+  geom_area(aes(fill = type))
+
+
+```
 
 
