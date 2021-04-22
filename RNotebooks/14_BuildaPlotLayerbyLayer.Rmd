@@ -276,10 +276,18 @@ meandispl <- mean(mpg$displ)
 sddipl <- sd(mpg$displ)
 
 ggplot(mpg) +
-  geom_density(aes(displ, after_stat(density),colour = "data"),lwd = 2) +
+  geom_density(aes(displ, after_stat(density),colour = "data"),adjust=0.8,, lwd = 2) +
   stat_function(aes(displ,colour = "normal"),fun=dnorm, args= list(mean =  meandispl, sd = sddipl), lwd=2) +
   scale_colour_manual(name = "Dist", values = c("salmon","cyan3"))
 # joint effort to get this - thanks YX and AM for pulling it together
+
+# YX improved version
+ggplot(mpg,aes(displ))+
+  stat_density(aes(color="data"),geom = "line",adjust=0.8,lwd=2)+
+  geom_function(aes(color="normal"),fun=dnorm,
+                args = list(mean = mean(mpg$displ),
+                            sd = sd(mpg$displ)),lwd=2)+
+  labs(color="Dist")
 
 ```
 
