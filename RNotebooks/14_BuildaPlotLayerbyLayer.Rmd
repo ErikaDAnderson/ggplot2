@@ -250,6 +250,8 @@ ggplot(smoothed, aes(displ, hwy)) +
   geom_ribbon(aes(ymin = hwy_lwr, ymax = hwy_upr), alpha = 0.2) +
     geom_line(color = "#3366FF", size = 1)
 
+# AM added geom_point also
+
 
 
 ```
@@ -274,10 +276,10 @@ meandispl <- mean(mpg$displ)
 sddipl <- sd(mpg$displ)
 
 ggplot(mpg) +
-  geom_density(aes(displ, after_stat(density)), color = "tomato") +
-  stat_function(aes(displ), fun = dnorm, args = c(mean = meandispl, sd = sddipl), col = "blue")
-# legend missing still
-# must be simpler way to add both - anyone else?
+  geom_density(aes(displ, after_stat(density),colour = "data"),lwd = 2) +
+  stat_function(aes(displ,colour = "normal"),fun=dnorm, args= list(mean =  meandispl, sd = sddipl), lwd=2) +
+  scale_colour_manual(name = "Dist", values = c("salmon","cyan3"))
+# joint effort to get this - thanks YX and AM for pulling it together
 
 ```
 
@@ -286,8 +288,13 @@ ggplot(mpg) +
 
 ```{r}
 
+# gives proportion
 ggplot(mpg, aes(drv, trans)) +
   geom_count(aes(size = after_stat(prop), group = drv))
+
+# gives count
+ggplot(mpg, aes(drv, trans)) +
+  geom_count(aes( group = drv))
 
 ```
 
@@ -303,6 +310,8 @@ ggplot(mpg, aes(drv, trans)) +
 -boxplot and error bars cannot be stacked as you cannot see them when they would overlap
 -geoms that are stackable must be able to be placed together such as bars, times series with geom_area, geom_line or geom_point
 -dodgable examples must be able to be offset like bars or boxplots (perhaps categorical data?)
+-count data to stack
+-continuous on y categorical on x to dodge
 
 ```{r}
 
@@ -359,6 +368,7 @@ ggplot(mpg, aes(displ, hwy)) +
 - area plot has presence with the right data
 - order of groups is important to not obscure data
 - geom_area shows the evolution of one or several numeric variables
+- YX says area must have same species and linemore time series
 
 ```{r}
 
