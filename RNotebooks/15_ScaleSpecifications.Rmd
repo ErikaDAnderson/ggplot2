@@ -38,3 +38,7 @@ ggplot(mpg, aes(y = displ, x = class)) +
 
 1. What are the three most important arguments that apply to both axes and legends? What do they do? Compare and contrast their operation for axes vs. legends.
 
+
+## No exercises within 16 Coordinate systems - reading only
+
+
