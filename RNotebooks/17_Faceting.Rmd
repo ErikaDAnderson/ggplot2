@@ -1,0 +1,21 @@
+---
+title: "ggplot2: 17 Faceting"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+library(tidyverse)
+
+```
+
+## 17.7 Exercises
+
+1. Diamonds: display the distribution of price conditional on cut and carat. Try faceting by cut and grouping by carat. Try faceting by carat and grouping by cut. Which do you prefer?
+
+2. Diamonds: compare the relationship between price and carat for each colour. What makes it hard to compare the groups? Is grouping better or faceting? If you use faceting, what annotation might you add to make it easier to see the differences between panels?
+
+3. Why is facet_wrap() generally more useful than facet_grid()?
+
+4. Recreate the following plot. It facets mpg2 by class, overlaying a smooth curve fit to the full dataset.
