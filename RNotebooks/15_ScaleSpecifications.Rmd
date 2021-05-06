@@ -38,8 +38,7 @@ ggplot(mpg, aes(y = displ, x = class)) +
 # simplify
 ggplot(mpg, aes(class, displ, colour = drv)) + 
   geom_point() + 
-  scale_x_discrete("Type of car") + 
-  scale_y_continuous("Displacement (l)") +
+  labs(x = "Type of car", y = "Displacement (l)") +
   scale_colour_discrete("Drive\ntrain")
 
 ```
