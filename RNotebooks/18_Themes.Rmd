@@ -1,0 +1,29 @@
+---
+title: "ggplot2: 18 Themes"
+output: html_notebook
+---
+
+This notebook is based on exercises completed from [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/index.html). 
+
+```{r setup, warning=FALSE,message=FALSE}
+library(tidyverse)
+
+```
+
+## 18.2.1 Complete Theme Exercises
+
+1. Try out all the themes in ggthemes. Which do you like the best?
+
+2. What aspects of the default theme do you like? What don’t you like? What would you change?
+
+3. Look at the plots in your favourite scientific journal. What theme do they most resemble? What are the main differences?
+
+## 18.4.6 Theme Elements Exercises
+
+1. Create the ugliest plot possible! (Contributed by Andrew D. Steen, University of Tennessee - Knoxville)
+
+2. theme_dark() makes the inside of the plot dark, but not the outside. Change the plot background to black, and then update the text settings so you can still read the labels.
+
+3. Make an elegant theme that uses “linen” as the background colour and a serif font for the text.
+
+4. Systematically explore the effects of hjust when you have a multiline title. Why doesn’t vjust do anything?
