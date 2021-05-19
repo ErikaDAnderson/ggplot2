@@ -14,8 +14,82 @@ library(tidyverse)
 
 1. Diamonds: display the distribution of price conditional on cut and carat. Try faceting by cut and grouping by carat. Try faceting by carat and grouping by cut. Which do you prefer?
 
+I prefer faceting by the categorical variable, in this case cut.
+
+```{r}
+
+# facet by cut and group by carat
+diamonds %>%
+  ggplot(aes(price, color = carat)) +
+  geom_density() +
+  facet_wrap(~cut)
+
+# facet by carat and group by cut
+# need to split the continuous varaiable in to discreate groups
+diamonds %>%
+  mutate(carat_n = cut_number(carat, 6)) %>%
+  ggplot(aes(price, color = cut)) +
+  geom_density() +
+  facet_wrap(~carat_n)
+
+```
+
+
 2. Diamonds: compare the relationship between price and carat for each colour. What makes it hard to compare the groups? Is grouping better or faceting? If you use faceting, what annotation might you add to make it easier to see the differences between panels?
+
+Overploting makes it hard to compare groups, but faceting makes it hard to see smaller differences.
+
+```{r}
+
+# group by color
+diamonds %>%
+  ggplot(aes(price, carat, color = color)) +
+  geom_point()
+
+# faceting by color
+diamonds %>%
+  ggplot(aes(price, carat)) +
+  facet_wrap(~color) +
+  geom_point()
+
+# try annotation with smooth line for whole data set
+diamonds_smooth <- dplyr::select(diamonds, -color)
+  
+diamonds %>%
+  ggplot(aes(price, carat)) +
+  geom_point() +
+  geom_smooth(data = diamonds_smooth, se = FALSE) +
+  facet_wrap(~color)
+
+# try annotation as full data set in background
+diamonds2 <- dplyr::select(diamonds, -color)
+
+diamonds %>%
+  ggplot(aes(price, carat)) +
+  geom_point(data = diamonds2, colour = "grey70") +
+  geom_point(data = diamonds) +
+  facet_wrap(~color)
+
+```
+
 
 3. Why is facet_wrap() generally more useful than facet_grid()?
 
+Usually better use of rectangular space with facet_wrap and one variable. With two variables, facet_grid often gives more control though.
+
 4. Recreate the following plot. It facets mpg2 by class, overlaying a smooth curve fit to the full dataset.
+
+```{r}
+
+# data subset given
+mpg2 <- subset(mpg, cyl != 5 & drv %in% c("4", "f") & class != "2seater")
+
+mpg3 <- dplyr::select(mpg2, -class)
+
+ggplot(mpg2, aes(displ, hwy)) +
+  geom_point() +
+  geom_smooth(data = mpg3, se = FALSE) +
+   facet_wrap(~class)
+
+```
+
