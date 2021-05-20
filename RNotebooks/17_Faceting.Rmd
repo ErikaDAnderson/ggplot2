@@ -20,8 +20,8 @@ I prefer faceting by the categorical variable, in this case cut.
 
 # facet by cut and group by carat
 diamonds %>%
-  ggplot() +
-  geom_density(aes(price, color = carat)) +
+  ggplot(aes(price, color = cut_number(carat, 6))) +
+  geom_density() +
   facet_wrap(~cut)
 
 # facet by carat and group by cut
