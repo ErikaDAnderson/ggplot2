@@ -14,16 +14,111 @@ library(tidyverse)
 
 1. Try out all the themes in ggthemes. Which do you like the best?
 
+[ggtheme examples](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)
+
+[theme_map] (https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/theme_map/)
+
 2. What aspects of the default theme do you like? What don’t you like? What would you change?
 
+I prefer theme_bw(). In particular, I change the grey background.
+
+```{r}
+
+#default theme
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) 
+
+# my favourite theme
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
+  theme_bw()
+
+```
+
+
 3. Look at the plots in your favourite scientific journal. What theme do they most resemble? What are the main differences?
+
+[Marine Ecological Progress Series](https://www.int-res.com/abstracts/meps/v666/)
+
+[Example Article](https://www.int-res.com/articles/feature/m666p001.pdf)
+
+On page 4,the map is simple with white background, no ticks. On page 8 the graphs are close to them_bw() with a white background and enclosed frame.
 
 ## 18.4.6 Theme Elements Exercises
 
 1. Create the ugliest plot possible! (Contributed by Andrew D. Steen, University of Tennessee - Knoxville)
 
+```{r}
+
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty, color = class), data = mpg) +
+  ggthemes::theme_excel() +
+  labs(title = "My Ugly Plot") +
+  theme(axis.title = element_text(family = "serif"),
+        axis.text = element_text(angle = 180),
+        plot.background = element_rect(fill = "yellow"),
+        panel.background = element_rect(fill = "purple"),
+        title = element_text(hjust = 1))
+  
+```
+
+
 2. theme_dark() makes the inside of the plot dark, but not the outside. Change the plot background to black, and then update the text settings so you can still read the labels.
+
+```{r}
+
+# base plot
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
+  theme_dark()
+
+# change plot background to black
+# change text color to read anyway
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
+  theme_dark() +
+  theme(plot.background = element_rect("black"),
+        axis.text = element_text(color = "white"))
+
+```
+
 
 3. Make an elegant theme that uses “linen” as the background colour and a serif font for the text.
 
+```{r}
+
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
+  labs(title = "Serif font with Linen Background") +
+  theme(plot.background = element_rect("linen"),
+        axis.text = element_text(family = "serif"),
+        title = element_text(family = "serif"))
+
+```
+
+
 4. Systematically explore the effects of hjust when you have a multiline title. Why doesn’t vjust do anything?
+
+```{r}
+
+p <- ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
+  labs(title = "This is a really long title \nso keep going.") 
+
+# baseplot
+p
+
+# plot with hjust
+p +
+  theme(plot.title = element_text(hjust = 0.5))
+
+p +
+  theme(plot.title = element_text(hjust = 1))
+
+# try vjust
+p +
+  theme(plot.title = element_text(vjust = 1))
+
+
+```
+
