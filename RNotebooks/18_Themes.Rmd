@@ -20,7 +20,7 @@ library(tidyverse)
 
 2. What aspects of the default theme do you like? What don’t you like? What would you change?
 
-I prefer theme_bw(). In particular, I change the grey background.
+I prefer theme_bw(). In particular, I always like to change the grey background.
 
 ```{r}
 
@@ -78,7 +78,8 @@ ggplot() +
  geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
   theme_dark() +
   theme(plot.background = element_rect("black"),
-        axis.text = element_text(color = "white"))
+        axis.text = element_text(color = "white"),
+        axis.title = element_text(color = "white"))
 
 ```
 
