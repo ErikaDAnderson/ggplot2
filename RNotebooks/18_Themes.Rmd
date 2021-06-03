@@ -28,10 +28,18 @@ I prefer theme_bw(). In particular, I always like to change the grey background.
 ggplot() + 
  geom_point(mapping = aes(y = hwy, x = cty), data = mpg) 
 
-# my favourite theme
+#HDB theme
+ggplot() + 
+ geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
+  theme_cowplot()
+
+# EA favourite theme
 ggplot() + 
  geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
   theme_bw()
+
+# YX recommends save plot as png with background as NA
+# BG = NA
 
 ```
 
@@ -91,14 +99,16 @@ ggplot() +
 ggplot() + 
  geom_point(mapping = aes(y = hwy, x = cty), data = mpg) +
   labs(title = "Serif font with Linen Background") +
+  theme_bw() +
   theme(plot.background = element_rect("linen"),
-        axis.text = element_text(family = "serif"),
-        title = element_text(family = "serif"))
+        text = element_text(family = "serif"))
 
 ```
 
 
 4. Systematically explore the effects of hjust when you have a multiline title. Why doesn’t vjust do anything?
+
+The vjust is constrained but the background of the plot
 
 ```{r}
 
@@ -120,6 +130,8 @@ p +
 p +
   theme(plot.title = element_text(vjust = 1))
 
+p +
+  theme(plot.title = element_text(vjust = 2))
 
 ```
 
