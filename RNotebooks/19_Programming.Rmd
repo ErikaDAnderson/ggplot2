@@ -205,3 +205,54 @@ ggplot(mpg, aes(drv, cty)) +
 
 ```
 
+## 19.4.3 Exercises
+
+1. Create a distribution() function specially designed for visualising continuous distributions. Allow the user to supply a dataset and the name of a variable to visualise. Let them choose between histograms, frequency polygons, and density plots. What other arguments might you want to include?
+
+2. What additional arguments should pcp() take? What are the downsides of how ... is used in the current code?
+
+3. Advanced: why doesn’t this code work? How can you fix it?
+
+```{r}
+
+f <- function() {
+  levs <- c("2seater", "compact", "midsize", "minivan", "pickup", 
+    "subcompact", "suv")
+  piechart3(mpg, factor(class, levels = levs))
+}
+f()
+
+#> Error in factor(class, levels = levs): object 'levs' not found
+```
+
+## 19.5.1 Exercises
+
+1. How could you add a geom_point() layer to each element of the following list?
+
+```{r}
+plots <- list(
+  ggplot(mpg, aes(displ, hwy)),
+  ggplot(diamonds, aes(carat, price)),
+  ggplot(faithfuld, aes(waiting, eruptions, size = density))
+)
+```
+
+2. What does the following function do? What’s a better name for it?
+
+displays each step of ggplot between each +
+I would call it layersFn
+
+```{r}
+mystery <- function(...) {
+  Reduce(`+`, list(...), accumulate = TRUE)
+}
+
+mystery(
+  ggplot(mpg, aes(displ, hwy)) + geom_point(), 
+  geom_smooth(), 
+  xlab(NULL), 
+  ylab(NULL)
+)
+```
+
+
