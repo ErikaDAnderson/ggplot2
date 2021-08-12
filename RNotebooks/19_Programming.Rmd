@@ -19,13 +19,20 @@ theme_set(theme_bw())
 
 ```{r}
 
+# with function
 hist_fn <- function(bins = 100, fill = "pink", ...)  {
   
-  geom_histogram(bins = 100, fill = "pink", ...)
+  geom_histogram(bins = 100, fill = "pink")
 }
 
 ggplot(diamonds, aes(carat)) + 
   hist_fn()
+
+# with object from YX
+pink_hist <- geom_histogram(bins = 100, fill="pink")
+ggplot(mpg, aes(hwy)) +
+pink_hist
+
 
 ```
 
@@ -40,6 +47,17 @@ ggplot(mpg, aes(manufacturer, fill = class)) +
   geom_bar() +
   myPalette +
   coord_flip() 
+
+# eruption example
+erupt <- ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+geom_raster() +
+scale_x_continuous(NULL, expand = c(0, 0)) +
+scale_y_continuous(NULL, expand = c(0, 0)) +
+theme(legend.position = "none")
+erupt
+blue_palette <- scale_fill_distiller(palette = "Blues")
+erupt+blue_palette
+
 
 ```
 
@@ -111,25 +129,54 @@ theme_grey <- function (base_size = 12, base_family = "") {
    
    require(wesanderson)
    
-  scale_color_manual(values = wes_palette(mynumber, name = myname, type = mytype), name = "")
+  scale_color_manual(values = wes_palette(mynumber, name = myname, type = mytype))
  
  }
 
-ggplot(mpg, aes(hwy, cty, color = class)) +
-  geom_point() +
+p <- ggplot(mpg, aes(hwy, cty, color = class)) +
+  geom_point() 
+p
+
+p +
   scale_colour_wesanderson(mynumber = 7, 
                            myname = "GrandBudapest1", 
                            mytype = "continuous")
 
 # or use less for discrete example
-mpg %>%
+p2 <- mpg %>%
   filter(class %in% c("2seater", "compact", "midsize", "pickup", "suv")) %>%
   ggplot(aes(hwy, cty, color = class)) +
-  geom_point() +
+  geom_point() 
+p2
+p2 +
   scale_colour_wesanderson(mynumber = 5, 
                            myname = "Zissou1", 
                            mytype = "discrete")
 
+
+# a different version
+# why is function not working with continuous?
+library(wesanderson)
+
+scale_colour_wesanderson <- function(parameter){
+  scale_color_manual(values = wes_palette(n = 3,parameter))
+}
+scale_colour_wesanderson_continous <- function(parameter){
+  scale_color_manual(values = wes_palette(n = 3,name = parameter,type = "continuous"))
+}
+p <- ggplot(mtcars, aes(x = wt, y = mpg, color = as.factor(cyl))) +
+  geom_point()
+p
+
+p +  scale_colour_wesanderson("Royal2")
+
+
+p2 <- ggplot(mtcars, aes(x = wt, y = mpg, color = cyl)) +
+  geom_point()
+p2
+# not working?
+# p2 + scale_colour_wesanderson_continous("Royal2")
+# Error: Continuous value supplied to discrete scale
 
 ```
 
@@ -140,6 +187,7 @@ mpg %>%
 
 ```{r}
 
+# as function
 removeAxes_fn <- function(...) {
   
   theme(axis.title = element_blank(),
@@ -149,11 +197,21 @@ removeAxes_fn <- function(...) {
   
 }
 
-ggplot(mpg, aes(cty, hwy, color = class)) +
-  geom_point() +
+# as object
+removeAxes <- theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none")
+
+# example graphs
+p <- ggplot(mpg, aes(cty, hwy, color = class)) +
+  geom_point() 
+p
+
+p +
   removeAxes_fn()
-  
-# can anyone see where NAs coming from?
+
+p + removeAxes
 
 ```
 
@@ -162,7 +220,19 @@ ggplot(mpg, aes(cty, hwy, color = class)) +
 
 ```{r}
 
-borders <- function(database = "world", regions = ".", fill = NA, 
+borders1 <- function(database = "world", regions = ".", fill = NA, 
+                    colour = "grey50", ...) {
+  df <- map_data(database, regions)
+  list(geom_polygon(
+    aes_(~lat, ~long, group = ~group), 
+    data = df, fill = fill, colour = colour, ..., 
+    inherit.aes = FALSE, show.legend = FALSE),
+    # asked for coord_quickmap but looks sideways
+    coord_quickmap()) 
+
+}
+
+borders2 <- function(database = "world", regions = ".", fill = NA, 
                     colour = "grey50", ...) {
   df <- map_data(database, regions)
   list(geom_polygon(
@@ -178,14 +248,48 @@ borders <- function(database = "world", regions = ".", fill = NA,
 
 
 ggplot() +
-  borders()
+  borders1()
+
+ggplot() +
+  borders2()
+
+# another example with aes modified instead
+borders <- function(database = "world", regions = ".", fill = NA,
+colour = "grey50", ...) {
+df <- map_data(database, regions)
+geom_polygon(
+aes_(~long, ~lat, group = ~group),
+data = df, fill = fill, colour = colour, ...,
+inherit.aes = FALSE, show.legend = FALSE
+)
+}
+
+if (require("maps")) {
+nz <- map_data("nz")
+# Prepare a map of NZ
+nzmap <- ggplot(nz, aes(x = long, y = lat, group = group)) +
+geom_polygon(fill = "white", colour = "black")
+# Plot it in cartesian coordinates
+nzmap
+}
+
+if (require("maps")) {
+# With the aspect ratio approximation
+nzmap + coord_quickmap()
+}
+
+ # With correct mercator projection
+nzmap + coord_quickmap() + borders("nz",fill = "pink")
 
 ```
 
 
 3.Look through your own code. What combinations of geoms or scales do you use all the time? How could you extract the pattern into a reusable function?
 
-I often make font bigger on axis titles and text
+I often make font bigger on axis titles and text for power point slides.
+
+Is there any advantage to using function versus object?
+Functions more flexible as you can add parameters
 
 
 ```{r}
@@ -201,7 +305,6 @@ ggplot(mpg, aes(drv, cty)) +
   geom_point() +
   biggerfont
 
-# Is there any advantage to using function versus object?
 
 ```
 
@@ -239,7 +342,7 @@ plots <- list(
 
 2. What does the following function do? What’s a better name for it?
 
-displays each step of ggplot between each +
+displays each step of ggplot between each step.
 I would call it layersFn
 
 ```{r}
