@@ -343,6 +343,9 @@ createDistributionFn(mpg, "hwy", "histogram", bins = 20)
 createDistributionFn(mpg, "hwy", "freqpoly", bins = 20)
 createDistributionFn(mpg, "hwy", "density")
 
+# another way
+
+
 ```
 
 
@@ -351,6 +354,8 @@ createDistributionFn(mpg, "hwy", "density")
 Additional arguments in the plot could be alpha, color, linetype, size.
 
 The downside of using ... like this, is that it is limited to geom_line, and no options can be used within ggplot call. I believe this is necessary to ensure there are no conflicts using ... in more than one place.
+
+If want more than one ... use seperate functions and put one function within another.
 
 
 ```{r}
@@ -389,6 +394,7 @@ pcp(mpg, aes(colour = drv))
 
 # add other options
 pcp(mpg, aes(linetype = drv))
+# or size = 3 or show.legend = FALSE
 
 ```
 
@@ -399,17 +405,36 @@ The first problem is that piecharts are now defunct and replaced by pie which wo
 
 ```{r}
 
-# given
+# #given
+# piechart1 <- function(data, var, ...) {
+#   piechart(data, aes_(~factor(1), fill = as.name(var)))
+# }
+# piechart1(mpg, "class") + theme(legend.position = "none")
+# 
+# piechart2 <- function(data, var, ...) {
+#   piechart(data, aes_(~factor(1), fill = var))
+# }
+# piechart2(mpg, ~class) + theme(legend.position = "none")
+# 
 # piechart3 <- function(data, var, ...) {
 #   piechart(data, aes_(~factor(1), fill = substitute(var)))
 # }
-#
+# piechart3(mpg, class) + theme(legend.position = "none")
+# 
 # f <- function() {
-#   levs <- c("2seater", "compact", "midsize", "minivan", "pickup", 
+#   levs <- c("2seater", "compact", "midsize", "minivan", "pickup",
 #     "subcompact", "suv")
 #   piechart3(mpg, factor(class, levels = levs))
 # }
 # f()
+# 
+# this runs with R 4.1.0 but not on R 4.0.4
+# f2 <- function() {
+#   levs <- c("2seater", "compact", "midsize", "minivan", "pickup",
+#     "subcompact", "suv")
+#   piechart3(mpg, class, levels = levs)
+# }
+# f2()
 
 # this given as example of why function do Not work 
 # it works though so updates must have addressed this
@@ -432,7 +457,6 @@ plots <- list(
   ggplot(faithfuld, aes(waiting, eruptions, size = density))
 )
 
-
 # create function to add point layer
 addpointlayerFn <- function(x) {
   x +
@@ -445,8 +469,11 @@ addpointlayerFn(ggplot(mpg, aes(displ, hwy)))
 # add to all layers of list
 lapply(plots, addpointlayerFn)
 
+# another way YX
+lapply(plots, function(g) g + geom_point())
+
 # another way is map
-map(plots, addpointlayerFn)
+purrr::map(plots, addpointlayerFn)
 
 ```
 
@@ -454,6 +481,8 @@ map(plots, addpointlayerFn)
 
 displays each step of ggplot between each step.
 I would call it layersFn
+Some say sequential function
+
 
 ```{r}
 mystery <- function(...) {
@@ -466,6 +495,9 @@ mystery(
   xlab(NULL), 
   ylab(NULL)
 )
+
+# another way to see how it works
+  Reduce(`+`, list(1,2,3,4), accumulate = TRUE)
 ```
 
 
